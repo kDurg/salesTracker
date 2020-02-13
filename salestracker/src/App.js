@@ -6,7 +6,7 @@ import './App.css';
 import AddSale from './Pages/AddSale';
 
 //IMPORT COMPONENTS
-import FormControlCard from './Components/FormControlCard';
+// import FormControlCard from './Components/FormControlCard';
 
 function App() {
   return (

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Col, Row, Button, Input, Table } from 'reactstrap';
 
 // IMPORT COMPONENTS
 import FormControlCard from '../Components/FormControlCard';
@@ -18,14 +19,32 @@ export default class AddSale extends React.Component {
     let userLevel = props.userLevel;
     }
 
+    handleChange(data) {
+
+    //     let player = { ...this.state.player };
+    //     player.searchName = data.target.value;
+    //     this.setState({ player });
+    }
+    
+    //   handleSubmit(data) {
+    
+    //     data.preventDefault();
+    //     this.setState({recentGameRequestFinished:false});
+    //     this.getSummonerData(this.state.player.searchName);
+    // }
+
     render (userLevel) {
         switch (userLevel){
 
             case 'admin': 
                 return (
-                    // <input
-                <p>PROPS: {this.state.userLevel}</p>
-                    // />
+                    // <p>PROPS: {this.state.userLevel}</p>
+                    <FormControlCard
+                        onChange= {data=>this.handleChange(data)}
+                        // placeholder= {props}
+                        // value= {props}
+                        type='textInput'
+                    />
                 )
 
             case 'manager':
