@@ -2,6 +2,12 @@ import React from 'react';
 // import logo from './logo.svg';
 import './App.css';
 
+// IMPORT PAGES FOR ROUTING
+import AddSale from './Pages/AddSale';
+
+//IMPORT COMPONENTS
+import FormControlCard from './Components/FormControlCard';
+
 function App() {
   return (
     <div className="App">
@@ -10,6 +16,7 @@ function App() {
           Sales Tracker
         </p>
       </header>
+      <AddSale userLevel='admin'/>
     </div>
   );
 }
