@@ -52,60 +52,59 @@ export default class AddSale extends React.Component {
 
         // MAKE A CALL TO GET THE ARRAY OF FIELDS REQUIRED TO ENTER SALE
         let returnedFields = ['cid', 'date', 'membershipLevel', 'name', 'salesperson'];
-
-        let formFields=({
-            fields: returnedFields,
-        })
+        let formFields = {fields: returnedFields};
         
         // Lets add the membership
         returnedFields.forEach(field =>{
-            console.log('Membership?? ', field)
             if (field = 'membershipLevel'){
-                console.log('YAY MEMBERSHIP?? ', field)
 
                 // MAKE A CALL TO CHECK DB FOR MEMBERSHIP LEVELS
                 let returnedMemberships = ['Yearly', 'Monthly', '8-pass', '4-Pass'];
-                formFields=({
+                formFields= {
                     fields: returnedFields,
                     memberships: returnedMemberships
-                });
+                };
             }
         });
 
-        console.log('mermberships ', formFields)
+        this.renderForm(formFields);
     }
 
-    renderForm(props) {
+    renderForm(fieldData) {
 
-        console.log('RenderFormData: ', props)
+        console.log('RenderFormData: ', fieldData);
+        // ADD LABEL AND INPUT FOR EACH FIELD (NOT MEMBERSHIPLEVEL)
+        
+        
+        // IF THERE IS A MEMBERSHIP, LOOP THROUGH AND ADD AN OPTION FOR EACH MEMBERSHIP
 
-        return (
-            <Form>
-                <FormGroup>
-                    <Label for='saleName'>Name</Label>
-                    <Input type='text' name='name' id='saleName' placeholder='Jane Doe' />
-                </FormGroup>
-                <FormGroup>
-                    <Label for='saleDate'>Date</Label>
-                    <Input type='date' name='date' id='saleDate' placeholder='6/1/2020' />
-                </FormGroup>
-                <FormGroup>
-                    <Label for='saleCID'>Customer ID#</Label>
-                    <Input type='number' name='cid' id='saleCID' placeholder='1234567' />
-                </FormGroup>
-                <FormGroup>
-                    <Label for='membership'>Membership</Label>
-                    <Input type="select" name="selectMembership" id="membershipLevel">
-                        {/* import options from props */}
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </Input>
-                </FormGroup>
-            </Form>
-        )
+        // return (
+        //     <Form>
+        //         <FormGroup>
+        //             <Label for='saleName'>Name</Label>
+        //             <Input type='text' name='name' id='saleName' placeholder='Jane Doe' />
+        //         </FormGroup>
+        //         <FormGroup>
+        //             <Label for='saleDate'>Date</Label>
+        //             <Input type='date' name='date' id='saleDate' placeholder='6/1/2020' />
+        //         </FormGroup>
+        //         <FormGroup>
+        //             <Label for='saleCID'>Customer ID#</Label>
+        //             <Input type='number' name='cid' id='saleCID' placeholder='1234567' />
+        //         </FormGroup>
+        //         <FormGroup>
+        //             <Label for='membership'>Membership</Label>
+        //             <Input type="select" name="selectMembership" id="membershipLevel">
+        //                 {/* import options from props */}
+        //                 <option>1</option>
+        //                 <option>2</option>
+        //                 <option>3</option>
+        //                 <option>4</option>
+        //                 <option>5</option>
+        //             </Input>
+        //         </FormGroup>
+        //     </Form>
+        // )
     }
 
     renderUserLevel(userLevel) {
