@@ -20,8 +20,8 @@ const FormControlCard = (props)=>{
                         <Input type='number' name='cid' id='saleCID' placeholder='1234567' />
                     </FormGroup>
                     <FormGroup>
-                        <Label for='mebership'>Date</Label>
-                        <Input type="select" name="select" id="exampleSelect">
+                        <Label for='membership'>Membership</Label>
+                        <Input type="select" name="selectMembership" id="membershipLevel">
                             {/* import options from props */}
                             <option>1</option>
                             <option>2</option>
@@ -32,6 +32,11 @@ const FormControlCard = (props)=>{
                     </FormGroup>
                 </Form> 
             )
+
+        case 'dropdown':
+            // DROPDOWN
+            return;
+        
         
         case 'textInput':
             return (
