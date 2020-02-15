@@ -29,8 +29,12 @@ export default class AddSale extends React.Component {
         //   this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentDidMount(props) {
+    componentDidMount(){
         this.getFieldsData();
+    }
+
+    componentDidUpdate(){
+        console.log('THis is STATE: ', this.state)
     }
 
     handleChange(event) {
@@ -67,14 +71,47 @@ export default class AddSale extends React.Component {
             }
         });
 
-        this.renderForm(formFields);
+        this.setState({companyFormData: formFields});
     }
 
-    renderForm(fieldData) {
+    renderForm() {
 
-        console.log('RenderFormData: ', fieldData);
-        // ADD LABEL AND INPUT FOR EACH FIELD (NOT MEMBERSHIPLEVEL)
+        console.log('RenderFormData: ', this.state.companyFormData);
         
+        let idName, type, name, placeholder;
+
+        // ADD LABEL AND INPUT FOR EACH FIELD (NOT MEMBERSHIPLEVEL)
+        // Object.entries(fieldData).forEach(category => {
+
+        //     if (category[0] == 'fields'){
+        //         console.log('cat1: ', category[0]);
+        //         category[1].forEach(field => {
+        //             console.log('field: ', field)
+                    
+        //             switch (field){
+        //                 case 'cid':
+        //                     console.log('CID: ')
+        //                     idName= 'saleCID';
+        //                     name= 'cid';
+        //                     placeholder= '1234567';
+        //                     type= 'text';
+                            
+        //                     return (
+        //                         <Form>
+
+        //                         <FormGroup>
+        //                             <Label for = {idName}></Label>
+        //                             <Input type='text' name={name} id={idName} placeholder={placeholder} />
+        //                         </FormGroup>
+        //                         </Form>
+        //                     )
+    
+        //                 default:
+        //                     return (<FormGroup> <p> BLANK {field}</p></FormGroup>)
+        //             }
+        //         })
+        //     }
+        // });
         
         // IF THERE IS A MEMBERSHIP, LOOP THROUGH AND ADD AN OPTION FOR EACH MEMBERSHIP
 
@@ -117,12 +154,12 @@ export default class AddSale extends React.Component {
                 return (
                     <>
                         <p>PROPS: {this.state.userLevel}</p>
-                        <FormControlCard
+                        {/* <FormControlCard
                             handleChange={(data) => this.handleChange(data)}
                             // placeholder= {props}
                             // value= {props}
                             type='addSaleForm'
-                        />
+                        /> */}
 
                     </>
                 )
@@ -155,6 +192,7 @@ export default class AddSale extends React.Component {
         return (
             <>
                 {this.renderUserLevel(this.state.userLevel)}
+                {this.renderForm()}
             </>
         )
 
