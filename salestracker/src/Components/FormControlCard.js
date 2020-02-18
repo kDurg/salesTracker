@@ -17,7 +17,7 @@ const FormControlCard = (props)=>{
                     </FormGroup>
                     <FormGroup>
                         <Label for='saleCID'>Customer ID#</Label>
-                        <Input type='number' name='cid' id='saleCID' placeholder='1234567' />
+                        <Input type='text' name='cid' id='saleCID' placeholder='1234567' />
                     </FormGroup>
                     <FormGroup>
                         <Label for='membership'>Membership</Label>

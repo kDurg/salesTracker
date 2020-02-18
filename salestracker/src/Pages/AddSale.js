@@ -7,195 +7,197 @@ import { Form, FormGroup, Label, FormText } from 'reactstrap';
 import FormControlCard from '../Components/FormControlCard';
 
 export default class AddSale extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            form: {
-                cid: '',
-                date: '',
-                membershipLevel: '',
-                name: '',
-                salesPerson: '',
-            },
-            companyFormData: [],
-            searchedText: '',
-            userLevel: props.userLevel
-        };
+	constructor(props) {
+		super(props);
+		this.state = {
+			form: {
+				cid: '',
+				customerName: '',
+				date: '',
+				membershipLevel: '',
+				salesPerson: '',
+			},
+			companyFormFields: [],
+			searchedText: '',
+			userLevel: props.userLevel
+		};
 
-        // BIND THIS ACROSS FUNCTIONS
-        //   this.getSummonerData = this.getSummonerData.bind(this);
-        //   this.getMostRecentMatchData = this.getMostRecentMatchData.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        //   this.handleSubmit = this.handleSubmit.bind(this);
-    }
+		// BIND THIS ACROSS FUNCTIONS
+		//   this.getSummonerData = this.getSummonerData.bind(this);
+		//   this.getMostRecentMatchData = this.getMostRecentMatchData.bind(this);
+		this.handleChange = this.handleChange.bind(this);
+		this.renderForm = this.renderForm.bind(this);
+		//   this.handleSubmit = this.handleSubmit.bind(this);
+	}
 
-    componentDidMount(){
-        this.getFieldsData();
-    }
+	componentDidMount() {
+		this.getFieldsData();
+	}
 
-    componentDidUpdate(){
-        console.log('THis is STATE: ', this.state)
-    }
+	componentDidUpdate() {
+		console.log('THis is STATE: ', this.state)
+	}
 
-    handleChange(event) {
-        console.log(event.target.value)
-        let inputText = event.target.value;
-        this.setState({ form: inputText });
-    }
+	handleChange(event) {
+		console.log(event.target.value)
+		let inputText = event.target.value;
+		this.setState({ form: inputText });
+	}
 
-    //   handleSubmit(data) {
+	//   handleSubmit(data) {
 
-    //     data.preventDefault();
-    //     this.setState({recentGameRequestFinished:false});
-    //     this.getSummonerData(this.state.player.searchName);
-    // }
+	//     data.preventDefault();
+	//     this.setState({recentGameRequestFinished:false});
+	//     this.getSummonerData(this.state.player.searchName);
+	// }
 
-    getFieldsData(){
-        // THIS IS TO BE USED SERVERSIDE TO JOIN TABLES AND RETURN A DATA OBJECT
-        // NEED TO CHECK FOR REQUIRED FIELDS DATA USED IN ADD SALE SHEET
+	getFieldsData() {
+		// THIS IS TO BE USED SERVERSIDE TO JOIN TABLES AND RETURN A DATA OBJECT
 
-        // MAKE A CALL TO GET THE ARRAY OF FIELDS REQUIRED TO ENTER SALE
-        let returnedFields = ['cid', 'date', 'membershipLevel', 'name', 'salesperson'];
-        let formFields = {fields: returnedFields};
-        
-        // Lets add the membership
-        returnedFields.forEach(field =>{
-            if (field = 'membershipLevel'){
+		// MAKE A CALL TO GET THE ARRAY OF FIELDS REQUIRED TO ENTER SALE
+		let returnedFields = ['cid', 'date', 'membershipLevel', 'name', 'salesperson'];
+		let returnedMemberships = [];
 
-                // MAKE A CALL TO CHECK DB FOR MEMBERSHIP LEVELS
-                let returnedMemberships = ['Yearly', 'Monthly', '8-pass', '4-Pass'];
-                formFields= {
-                    fields: returnedFields,
-                    memberships: returnedMemberships
-                };
-            }
-        });
+		// SEARCH TO SEE IF THERE ARE MEMBERSHIP LEVELS
+		returnedFields.map(field => {
+			if (field = 'membershipLevel') {
+				// MAKE A CALL TO CHECK DB FOR MEMBERSHIP LEVELS
+				returnedMemberships = ['Yearly', 'Monthly', '8-pass', '4-Pass'];
+			} else {
+				returnedMemberships = null;
+			}
+		});
 
-        this.setState({companyFormData: formFields});
-    }
+		this.setState({
+			companyFormFields: returnedFields,
+			companyFormMemberships: returnedMemberships
+		});
+	}
 
-    renderForm() {
+	renderField(type, name, id, placeholder, friendlyFieldName) {
+		if (type !== 'select') {
+			return (
+				<FormGroup>
+					<Label for={id}>{friendlyFieldName}</Label>
+					<Input type={type} name={name} id={id} placeholder={placeholder} />
+				</FormGroup>
+			)
+		} else if (type == 'select') {
+			let options = this.state.companyFormMemberships;
+			return (
+				<FormGroup>
+					<Label for={id}>{friendlyFieldName}</Label>
+					<Input type={type} name={name} id={id} placeholder={placeholder}>
+						{options.map(membership => {
+							return (this.renderMemberships(membership))
+						})}
+					</Input>
+				</FormGroup>
+			)
+		}
+	}
 
-        console.log('RenderFormData: ', this.state.companyFormData);
-        
-        let idName, type, name, placeholder;
+	renderForm(props) {
+		if (props) {
+			let friendlyFieldName = props[0].toUpperCase() + props.slice(1);
+			let id = `sale${friendlyFieldName}`;
+			let placeholder, type;
 
-        // ADD LABEL AND INPUT FOR EACH FIELD (NOT MEMBERSHIPLEVEL)
-        // Object.entries(fieldData).forEach(category => {
+			switch (props) {
 
-        //     if (category[0] == 'fields'){
-        //         console.log('cat1: ', category[0]);
-        //         category[1].forEach(field => {
-        //             console.log('field: ', field)
-                    
-        //             switch (field){
-        //                 case 'cid':
-        //                     console.log('CID: ')
-        //                     idName= 'saleCID';
-        //                     name= 'cid';
-        //                     placeholder= '1234567';
-        //                     type= 'text';
-                            
-        //                     return (
-        //                         <Form>
+				case 'cid':
+					friendlyFieldName = 'Customer ID'
+					placeholder = '1234567'
+					return (
+						this.renderField(type, props, id, placeholder, friendlyFieldName)
+					)
 
-        //                         <FormGroup>
-        //                             <Label for = {idName}></Label>
-        //                             <Input type='text' name={name} id={idName} placeholder={placeholder} />
-        //                         </FormGroup>
-        //                         </Form>
-        //                     )
-    
-        //                 default:
-        //                     return (<FormGroup> <p> BLANK {field}</p></FormGroup>)
-        //             }
-        //         })
-        //     }
-        // });
-        
-        // IF THERE IS A MEMBERSHIP, LOOP THROUGH AND ADD AN OPTION FOR EACH MEMBERSHIP
+				// FOR DATE PICKER INPUTS
+				case 'date':
+					placeholder = '6/1/2020';
+					type = 'date';
+					return (
+						this.renderField(type, props, id, placeholder, friendlyFieldName)
+					)
 
-        // return (
-        //     <Form>
-        //         <FormGroup>
-        //             <Label for='saleName'>Name</Label>
-        //             <Input type='text' name='name' id='saleName' placeholder='Jane Doe' />
-        //         </FormGroup>
-        //         <FormGroup>
-        //             <Label for='saleDate'>Date</Label>
-        //             <Input type='date' name='date' id='saleDate' placeholder='6/1/2020' />
-        //         </FormGroup>
-        //         <FormGroup>
-        //             <Label for='saleCID'>Customer ID#</Label>
-        //             <Input type='number' name='cid' id='saleCID' placeholder='1234567' />
-        //         </FormGroup>
-        //         <FormGroup>
-        //             <Label for='membership'>Membership</Label>
-        //             <Input type="select" name="selectMembership" id="membershipLevel">
-        //                 {/* import options from props */}
-        //                 <option>1</option>
-        //                 <option>2</option>
-        //                 <option>3</option>
-        //                 <option>4</option>
-        //                 <option>5</option>
-        //             </Input>
-        //         </FormGroup>
-        //     </Form>
-        // )
-    }
+				// FOR DROPDOWN INPUTS
+				case 'membershipLevel':
+					friendlyFieldName = 'Membership Level';
+					placeholder = 'Membership Level';
+					type = 'select';
+					return (
+						this.renderField(type, props, id, placeholder, friendlyFieldName)
+					)
 
-    renderUserLevel(userLevel) {
-        switch (userLevel) {
+				default:
+					type = 'text'
+					return (
+						this.renderField(type, props, id, placeholder, friendlyFieldName)
+					)
+			}
+		}
+	}
 
-            case 'admin':
-                // ABILITY TO SWITCH BUISNESSES VIA SEARCH
-                // ABILITY TO SEE ALL USER DATA
-                // ABILITY TO EDIT ALL DATA (IF ENABLED)
-                return (
-                    <>
-                        <p>PROPS: {this.state.userLevel}</p>
-                        {/* <FormControlCard
+	renderMemberships(membership) {
+		return (<option value={membership}>{membership}</option>)
+	}
+
+	renderUserLevel(userLevel) {
+		switch (userLevel) {
+
+			case 'admin':
+				// ABILITY TO SWITCH BUISNESSES VIA SEARCH
+				// ABILITY TO SEE ALL USER DATA
+				// ABILITY TO EDIT ALL DATA (IF ENABLED)
+				return (
+					<>
+						<p>PROPS: {this.state.userLevel}</p>
+						{/* <FormControlCard
                             handleChange={(data) => this.handleChange(data)}
                             // placeholder= {props}
                             // value= {props}
                             type='addSaleForm'
                         /> */}
 
-                    </>
-                )
+					</>
+				)
 
-            case 'manager':
-                // ABILITY TO SEE ALL USER DATA
-                // ABILITY TO ADD/EDIT ALL DATA
-                return (
-                    // <input
-                    <p>PROPS: {this.state.userLevel}</p>
-                    // />
-                )
+			case 'manager':
+				// ABILITY TO SEE ALL USER DATA
+				// ABILITY TO ADD/EDIT ALL DATA
+				return (
+					// <input
+					<p>PROPS: {this.state.userLevel}</p>
+					// />
+				)
 
-            case 'user':
-                // ABILITY TO ADD/EDIT DATA ASSOCIATED WITH USER
-                // ABIILITY TO VIEW DATA ASSOCIATED WITH USER
-                return (
-                    // <input
-                    <p>PROPS: {this.state.userLevel}</p>
-                    // />
-                )
+			case 'user':
+				// ABILITY TO ADD/EDIT DATA ASSOCIATED WITH USER
+				// ABIILITY TO VIEW DATA ASSOCIATED WITH USER
+				return (
+					// <input
+					<p>PROPS: {this.state.userLevel}</p>
+					// />
+				)
 
-            default:
-                return (console.log(`[ERROR]: NO USER LEVEL DEFINED`))
+			default:
+				return (console.log(`[ERROR]: NO USER LEVEL DEFINED`))
 
-        }
-    }
+		}
+	}
 
-    render() {
-        return (
-            <>
-                {this.renderUserLevel(this.state.userLevel)}
-                {this.renderForm()}
-            </>
-        )
-
-    }
+	render() {
+		if (this.state.companyFormFields) {
+			const companyFields = this.state.companyFormFields;
+			return (
+				<>
+					{this.renderUserLevel(this.state.userLevel)}
+					{companyFields.map(name => {
+						return this.renderForm(name)
+					})}
+				</>
+			)
+		}
+	}
 
 }
