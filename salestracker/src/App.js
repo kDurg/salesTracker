@@ -16,7 +16,10 @@ function App() {
           Sales Tracker
         </p>
       </header>
-        <AddSale userLevel='admin'/>
+        <AddSale
+          userFriendlyName= 'Becky D.'
+          userLevel='admin'
+        />
     </div>
   );
 }

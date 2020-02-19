@@ -1,7 +1,5 @@
 import React from 'react';
-import { Col, Row, Button, Input, Table } from 'reactstrap';
-import { Form, FormGroup, Label, FormText } from 'reactstrap';
-
+import { Col, Row, Button } from 'reactstrap';
 
 // IMPORT COMPONENTS
 import FormControlCard from '../Components/FormControlCard';
@@ -19,12 +17,11 @@ export default class AddSale extends React.Component {
 			},
 			companyFormFields: [],
 			searchedText: '',
+			userFriendlyName: props.userFriendlyName,
 			userLevel: props.userLevel
 		};
 
 		// BIND THIS ACROSS FUNCTIONS
-		//   this.getSummonerData = this.getSummonerData.bind(this);
-		//   this.getMostRecentMatchData = this.getMostRecentMatchData.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.renderForm = this.renderForm.bind(this);
 		//   this.handleSubmit = this.handleSubmit.bind(this);
@@ -79,24 +76,22 @@ export default class AddSale extends React.Component {
 
 		if (type !== 'select') {
 			return (
-				<FormGroup>
-					<Label for={id}>{friendlyFieldName}</Label>
-					<Input type={type} name={name} id={id} placeholder={placeholder} />
-				</FormGroup>
-			)
+				<FormControlCard key={id}
+					data={data}
+					type='standardField'
+				/>
+			);
 
 			// FOR DROPDOWN OPTIONS
 		} else if (type == 'select') {
 			let options = this.state.companyFormMemberships;
 			return (
-				<FormGroup>
-					<FormControlCard
-						dropdownOptions={options}
-						data={data}
-						type='dropdownField'
-					/>
-				</FormGroup>
-			)
+				<FormControlCard key={id}
+					dropdownOptions={options}
+					data={data}
+					type='dropdownField'
+				/>
+			);
 		}
 	}
 
@@ -106,14 +101,14 @@ export default class AddSale extends React.Component {
 			let id = `sale${friendlyFieldName}`;
 			let placeholder, type;
 
+			console.log(props)
 			switch (props) {
-
 				case 'cid':
-					friendlyFieldName = 'Customer ID'
-					placeholder = '1234567'
+					friendlyFieldName = 'Customer ID';
+					placeholder = '1234567';
 					return (
 						this.renderField(type, props, id, placeholder, friendlyFieldName)
-					)
+					);
 
 				// FOR DATE PICKER INPUTS
 				case 'date':
@@ -121,7 +116,7 @@ export default class AddSale extends React.Component {
 					type = 'date';
 					return (
 						this.renderField(type, props, id, placeholder, friendlyFieldName)
-					)
+					);
 
 				// FOR DROPDOWN INPUTS
 				case 'membershipLevel':
@@ -130,13 +125,28 @@ export default class AddSale extends React.Component {
 					type = 'select';
 					return (
 						this.renderField(type, props, id, placeholder, friendlyFieldName)
-					)
+					);
 
-				default:
-					type = 'text'
+				case 'name':
+					friendlyFieldName = `Customer ${friendlyFieldName}`;
+					placeholder = 'Jane Doe';
+					type = 'text';
 					return (
 						this.renderField(type, props, id, placeholder, friendlyFieldName)
-					)
+					);
+
+				case 'salesperson':
+					placeholder = this.state.userFriendlyName;
+					type = 'text';
+					return (
+						this.renderField(type, props, id, placeholder, friendlyFieldName)
+					);
+
+				default:
+					type = 'text';
+					return (
+						this.renderField(type, props, id, placeholder, friendlyFieldName)
+					);
 			}
 		}
 	}
@@ -152,14 +162,14 @@ export default class AddSale extends React.Component {
 					<>
 						<p>PROPS: {this.state.userLevel}</p>
 						{/* <FormControlCard
-                            handleChange={(data) => this.handleChange(data)}
-                            // placeholder= {props}
-                            // value= {props}
-                            type='addSaleForm'
-                        /> */}
+							handleChange={(data) => this.handleChange(data)}
+							// placeholder= {props}
+							// value= {props}
+							type='addSaleForm'
+						/> */}
 
 					</>
-				)
+				);
 
 			case 'manager':
 				// ABILITY TO SEE ALL USER DATA
@@ -168,7 +178,7 @@ export default class AddSale extends React.Component {
 					// <input
 					<p>PROPS: {this.state.userLevel}</p>
 					// />
-				)
+				);
 
 			case 'user':
 				// ABILITY TO ADD/EDIT DATA ASSOCIATED WITH USER
@@ -177,10 +187,10 @@ export default class AddSale extends React.Component {
 					// <input
 					<p>PROPS: {this.state.userLevel}</p>
 					// />
-				)
+				);
 
 			default:
-				return (console.log(`[ERROR]: NO USER LEVEL DEFINED`))
+				return (console.log(`[ERROR]: NO USER LEVEL DEFINED`));
 
 		}
 	}
@@ -195,7 +205,7 @@ export default class AddSale extends React.Component {
 						return this.renderForm(name)
 					})}
 				</>
-			)
+			);
 		}
 	}
 
