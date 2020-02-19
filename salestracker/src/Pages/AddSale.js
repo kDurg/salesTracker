@@ -8,67 +8,46 @@ export default class AddSale extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			form: {
-				cid: '',
-				customerName: '',
-				date: '',
-				membershipLevel: '',
-				salesPerson: '',
-			},
+			form: {},
 			companyFormFields: [],
 			searchedText: '',
 			userFriendlyName: props.userFriendlyName,
-			userLevel: props.userLevel
+			userLevel: props.userLevel,
+			validForm: 'false'
 		};
 
 		// BIND THIS ACROSS FUNCTIONS
 		this.handleChange = this.handleChange.bind(this);
 		this.renderForm = this.renderForm.bind(this);
-		//   this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	componentDidMount() {
-		this.getFieldsData();
+		this.serverGetFieldsData();
 	}
 
 	componentDidUpdate() {
 		console.log('THis is STATE: ', this.state)
+
+		// *************** NEED TO CHECK TO SEE IF THERE ARE CHANGES TO ENABLE SAVE BUTTON
+		if (!this.state.form && this.state.validForm !== 'true'){
+			console.log('now valid')
+			this.setState({validForm: 'true'})
+		}
 	}
 
 	handleChange(event) {
-		console.log(event.target.value)
+		console.log(event.target.value, event.target.name)
 		let inputText = event.target.value;
-		this.setState({ form: inputText });
+		let inputField = event.target.name;
+		let form = { ...this.state.form };
+		form[inputField] = inputText;
+
+		this.setState({ form });
 	}
 
-	//   handleSubmit(data) {
-
-	//     data.preventDefault();
-	//     this.setState({recentGameRequestFinished:false});
-	//     this.getSummonerData(this.state.player.searchName);
-	// }
-
-	getFieldsData() {
-		// THIS IS TO BE USED SERVERSIDE TO JOIN TABLES AND RETURN A DATA OBJECT
-
-		// MAKE A CALL TO GET THE ARRAY OF FIELDS REQUIRED TO ENTER SALE
-		let returnedFields = ['cid', 'date', 'membershipLevel', 'name', 'salesperson'];
-		let returnedMemberships = [];
-
-		// SEARCH TO SEE IF THERE ARE MEMBERSHIP LEVELS
-		returnedFields.map(field => {
-			if (field = 'membershipLevel') {
-				// MAKE A CALL TO CHECK DB FOR MEMBERSHIP LEVELS
-				returnedMemberships = ['Yearly', 'Monthly', '8-pass', '4-Pass'];
-			} else {
-				returnedMemberships = null;
-			}
-		});
-
-		this.setState({
-			companyFormFields: returnedFields,
-			companyFormMemberships: returnedMemberships
-		});
+	handleSubmit(event) {
+		this.validateRequiredFields();
 	}
 
 	renderField(type, name, id, placeholder, friendlyFieldName) {
@@ -78,7 +57,9 @@ export default class AddSale extends React.Component {
 			return (
 				<FormControlCard key={id}
 					data={data}
+					handleChange={(data) => this.handleChange(data)}
 					type='standardField'
+					value={this.state.form[name]}
 				/>
 			);
 
@@ -87,9 +68,12 @@ export default class AddSale extends React.Component {
 			let options = this.state.companyFormMemberships;
 			return (
 				<FormControlCard key={id}
-					dropdownOptions={options}
 					data={data}
+					dropdownOptions={options}
+					onChange={(data) => this.handleChange(data)}
+					placeholder='Select...'
 					type='dropdownField'
+					value={this.state.form[name]}
 				/>
 			);
 		}
@@ -101,7 +85,7 @@ export default class AddSale extends React.Component {
 			let id = `sale${friendlyFieldName}`;
 			let placeholder, type;
 
-			console.log(props)
+			// console.log(props)
 			switch (props) {
 				case 'cid':
 					friendlyFieldName = 'Customer ID';
@@ -191,8 +175,55 @@ export default class AddSale extends React.Component {
 
 			default:
 				return (console.log(`[ERROR]: NO USER LEVEL DEFINED`));
-
 		}
+	}
+
+	serverGetFieldsData() {
+		// THIS IS TO BE USED SERVERSIDE TO JOIN TABLES AND RETURN A DATA OBJECT
+
+		// MAKE A CALL TO GET THE ARRAY OF FIELDS REQUIRED TO ENTER SALE
+		let returnedFields = ['cid', 'date', 'membershipLevel', 'name', 'salesperson'];
+		let returnedMemberships = [];
+
+		// SEARCH TO SEE IF THERE ARE MEMBERSHIP LEVELS
+		returnedFields.map(field => {
+			if (field = 'membershipLevel') {
+				// MAKE A CALL TO CHECK DB FOR MEMBERSHIP LEVELS
+				returnedMemberships = ['Yearly', 'Monthly', '8-pass', '4-Pass'];
+			} else {
+				returnedMemberships = null;
+			}
+		});
+
+		this.setState({
+			companyFormFields: returnedFields,
+			companyFormMemberships: returnedMemberships
+		});
+	}
+
+	validateRequiredFields() {
+		// LOOP THROUGH REQUIRED FIELDS AND CHECK THERE IS A SAVED VALUE IN STATE FOR EACH FIELD
+		let requiredFields = this.state.companyFormFields;
+		let formFields = this.state.form;
+		let filledFields = [];
+
+		Object.keys(formFields).map(field => {
+			filledFields.push(field)
+		});
+
+		console.log('filled fields', filledFields)
+
+		if (filledFields == []) {
+			// POP ALERT TO WARN NOTHING HAS BEEN ADDED
+		}
+
+		requiredFields.map(requiredField => {
+			if (requiredField.includes(filledFields)) {
+				console.log('does not contain ' + requiredField)
+			} else {
+				console.log('all fields accounted for')
+			}
+		})
 	}
 
 	render() {
@@ -201,9 +232,17 @@ export default class AddSale extends React.Component {
 			return (
 				<>
 					{this.renderUserLevel(this.state.userLevel)}
-					{companyFields.map(name => {
-						return this.renderForm(name)
-					})}
+					<div className='addSaleDiv'>
+						{companyFields.map(name => {
+							return this.renderForm(name)
+						})}
+						<FormControlCard
+							buttonText='Save'
+							disabled={!this.state.validForm}
+							onClick={this.handleSubmit}
+							type='button'
+						/>
+					</div>
 				</>
 			);
 		}
