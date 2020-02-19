@@ -75,6 +75,8 @@ export default class AddSale extends React.Component {
 	}
 
 	renderField(type, name, id, placeholder, friendlyFieldName) {
+		let data = { type, name, id, placeholder, friendlyFieldName };
+
 		if (type !== 'select') {
 			return (
 				<FormGroup>
@@ -82,16 +84,17 @@ export default class AddSale extends React.Component {
 					<Input type={type} name={name} id={id} placeholder={placeholder} />
 				</FormGroup>
 			)
+
+			// FOR DROPDOWN OPTIONS
 		} else if (type == 'select') {
 			let options = this.state.companyFormMemberships;
 			return (
 				<FormGroup>
-					<Label for={id}>{friendlyFieldName}</Label>
-					<Input type={type} name={name} id={id} placeholder={placeholder}>
-						{options.map(membership => {
-							return (this.renderMemberships(membership))
-						})}
-					</Input>
+					<FormControlCard
+						dropdownOptions={options}
+						data={data}
+						type='dropdownField'
+					/>
 				</FormGroup>
 			)
 		}
@@ -136,10 +139,6 @@ export default class AddSale extends React.Component {
 					)
 			}
 		}
-	}
-
-	renderMemberships(membership) {
-		return (<option value={membership}>{membership}</option>)
 	}
 
 	renderUserLevel(userLevel) {

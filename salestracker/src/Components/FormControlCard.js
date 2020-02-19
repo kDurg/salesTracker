@@ -1,54 +1,36 @@
 import React from 'react';
 import { Button, Input, Table, Form, FormGroup, Label, FormText } from 'reactstrap';
 
-const FormControlCard = (props)=>{
-    switch (props.type){
+const FormControlCard = (props) => {
+    let data = props.data;
+    switch (props.type) {
 
-        case 'addSaleForm':
+        case 'dropdownField':
+            let options = props.dropdownOptions;
+            console.log('yay? : ', props)
+            // return <h1>yay</h1>
             return (
-                <Form>
-                    <FormGroup>
-                        <Label for='saleName'>Name</Label>
-                        <Input type='text' name='name' id='saleName' placeholder='Jane Doe' />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for='saleDate'>Date</Label>
-                        <Input type='date' name='date' id='saleDate' placeholder='6/1/2020' />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for='saleCID'>Customer ID#</Label>
-                        <Input type='text' name='cid' id='saleCID' placeholder='1234567' />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for='membership'>Membership</Label>
-                        <Input type="select" name="selectMembership" id="membershipLevel">
-                            {/* import options from props */}
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </Input>
-                    </FormGroup>
-                </Form> 
+                <FormGroup>
+                    <Label for={data.id}>{data.friendlyFieldName}</Label>
+                    <Input type={data.type} name={data.name} id={data.id} placeholder={data.placeholder}>
+                        {options.map(membership => {
+                            return (
+                                <FormControlCard 
+                                    option = {membership}
+                                    type = 'dropdownOption'
+                                />
+                            )
+                        })}
+                    </Input>
+                </FormGroup>
             )
-
-        case 'dropdown':
-            // DROPDOWN
-            return;
         
-        
-        case 'textInput':
-            return (
-                <Input
-                    onChange= {props.handleChange}
-                    placeholder= {props.placeholder ? props.placeholder : null}
-                    value= {props.searchedValue}
-                />
-            )
+        case 'dropdownOption':
+            console.log("FCC Option:", props.option)
+            return (<option value={props.option}>{props.option}</option>)
 
         default:
-            return <p>'DEFAULT CASE'</p>
+return <p>'DEFAULT CASE'</p>
     }
 }
 
