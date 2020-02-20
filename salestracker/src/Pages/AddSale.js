@@ -13,13 +13,14 @@ export default class AddSale extends React.Component {
 			searchedText: '',
 			userFriendlyName: props.userFriendlyName,
 			userLevel: props.userLevel,
-			validForm: 'false'
+			invalidForm: 'true'
 		};
 
 		// BIND THIS ACROSS FUNCTIONS
+		this.clearForm = this.clearForm.bind(this);
 		this.handleChange = this.handleChange.bind(this);
-		this.renderForm = this.renderForm.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.renderForm = this.renderForm.bind(this);
 	}
 
 	componentDidMount() {
@@ -28,12 +29,27 @@ export default class AddSale extends React.Component {
 
 	componentDidUpdate() {
 		console.log('THis is STATE: ', this.state)
+		let stateForm = this.state.form;
+
+		console.log('values length: ', Object.values(stateForm).length)
 
 		// *************** NEED TO CHECK TO SEE IF THERE ARE CHANGES TO ENABLE SAVE BUTTON
-		if (!this.state.form && this.state.validForm !== 'true'){
-			console.log('now valid')
-			this.setState({validForm: 'true'})
+		if (this.state.invalidForm == 'true') {
+			if (Object.values(stateForm).length !== 0 && Object.values(stateForm)[0] !== '') {
+				console.log('valid', Object.values(stateForm))
+				this.setState({ invalidForm: 'false' })
+			}
+		} else if (this.state.invalidForm == 'false') {
+			if (Object.values(stateForm).length == 0 || Object.values(stateForm)[0] == '') {
+				console.log('not valid', Object.values(stateForm))
+				this.setState({ invalidForm: 'true' })
+			}
 		}
+
+	}
+
+	clearForm() {
+		this.setState({ form: {} })
 	}
 
 	handleChange(event) {
@@ -236,12 +252,22 @@ export default class AddSale extends React.Component {
 						{companyFields.map(name => {
 							return this.renderForm(name)
 						})}
-						<FormControlCard
-							buttonText='Save'
-							disabled={!this.state.validForm}
-							onClick={this.handleSubmit}
-							type='button'
-						/>
+						{this.state.invalidForm == 'false' ?
+							<>
+								<FormControlCard
+									buttonText='Save'
+									// disabled={this.state.invalidForm}
+									onClick={this.handleSubmit}
+									type='button'
+								/>
+								<FormControlCard
+									buttonText='Clear'
+									// disabled={this.state.invalidForm}
+									onClick={this.clearForm}
+									type='button'
+								/>
+							</>
+							: null}
 					</div>
 				</>
 			);
