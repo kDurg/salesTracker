@@ -28,24 +28,23 @@ export default class AddSale extends React.Component {
 	}
 
 	componentDidUpdate() {
-		console.log('THis is STATE: ', this.state)
+		console.log('THis is STATE: ', this.state)		
+		this.checkFormChanges()
+	}
+	
+	checkFormChanges() {
+		// CHECKS TO SEE IF WE HAVE INPUTED FORM DATA TO RENDER SAVE/ CLEAR BUTTONS
 		let stateForm = this.state.form;
 
-		console.log('values length: ', Object.values(stateForm).length)
-
-		// *************** NEED TO CHECK TO SEE IF THERE ARE CHANGES TO ENABLE SAVE BUTTON
 		if (this.state.invalidForm == 'true') {
 			if (Object.values(stateForm).length !== 0 && Object.values(stateForm)[0] !== '') {
-				console.log('valid', Object.values(stateForm))
 				this.setState({ invalidForm: 'false' })
 			}
 		} else if (this.state.invalidForm == 'false') {
 			if (Object.values(stateForm).length == 0 || Object.values(stateForm)[0] == '') {
-				console.log('not valid', Object.values(stateForm))
 				this.setState({ invalidForm: 'true' })
 			}
 		}
-
 	}
 
 	clearForm() {
@@ -53,7 +52,6 @@ export default class AddSale extends React.Component {
 	}
 
 	handleChange(event) {
-		console.log(event.target.value, event.target.name)
 		let inputText = event.target.value;
 		let inputField = event.target.name;
 		let form = { ...this.state.form };
@@ -222,26 +220,42 @@ export default class AddSale extends React.Component {
 		let requiredFields = this.state.companyFormFields;
 		let formFields = this.state.form;
 		let filledFields = [];
+		
 
-		Object.keys(formFields).map(field => {
-			filledFields.push(field)
-		});
+		let checker = (arr, target) => target.every(v => arr.includes(v));
+		
+		if (Object.entries(filledFields) !== 0) {
+			
+			// CHECK TO SEE IF ALL REQUIRED FIELDS ARE FILLED OUT
+			if(checker(filledFields, requiredFields) == false){
+				console.log('Not all fields filled out')
 
-		console.log('filled fields', filledFields)
+				// ***************** IF WE ARE MISSING A FIELD(S), DISPLAY WHICH IS MISSING
+				let difference = Object.entries(requiredFields).filter(k => requiredFields[k] !== filledFields[k]);
+				console.log(difference)
 
-		if (filledFields == []) {
-			// POP ALERT TO WARN NOTHING HAS BEEN ADDED
-		}
-
-		requiredFields.map(requiredField => {
-			if (requiredField.includes(filledFields)) {
-				console.log('does not contain ' + requiredField)
+				// IF ALL FIELDS ARE IN STATE, CHECK FOR EMPTY VALUES
+				Object.entries(formFields).map(field => {
+					if (field[1] == "" || !field[1]){
+						console.log('missing value for ', field[0])
+					}
+				})
 			} else {
-				console.log('all fields accounted for')
+				console.log('All fields here!')
 			}
-		})
+		}
+		
+		// Object.entries(formFields).map(field => {
+		// 	if (field[1] == "" || !field[1]){
+		// 		console.log('missing value for ', field[0])
+		// 	} else {
+		// 		filledFields.push(field[0])
+		// 		console.log('pushed field', filledFields)
+		// 	}
+			
+		// });
 	}
-
+	
 	render() {
 		if (this.state.companyFormFields) {
 			const companyFields = this.state.companyFormFields;

@@ -6,7 +6,6 @@ const FormControlCard = (props) => {
 	switch (props.type) {
 
 		case 'button':
-			console.log('btn disabled status: ', props.disabled)
 			return (
 				<Button disabled={props.disabled} onClick={props.onClick}>{props.buttonText}</Button>
 			)
