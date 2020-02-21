@@ -220,19 +220,31 @@ export default class AddSale extends React.Component {
 		let requiredFields = this.state.companyFormFields;
 		let formFields = this.state.form;
 		let filledFields = [];
-		
+		let emptyFields = [];
 
 		let checker = (arr, target) => target.every(v => arr.includes(v));
+
+		// ADD FIELDS THAT HAVE VALUES TO FILLEDFIELD ARRAY
+		Object.entries(formFields).map(field => {
+			if (field[1] == "" || !field[1]){
+				console.log('No Value for ', field[0])
+				emptyFields.push(field[0])
+
+			} else {
+				filledFields.push(field[0])
+				console.log('pushed field ', filledFields)
+			}
+		});
 		
-		if (Object.entries(filledFields) !== 0) {
+		if (Object.entries(filledFields).length !== 0) {
 			
 			// CHECK TO SEE IF ALL REQUIRED FIELDS ARE FILLED OUT
 			if(checker(filledFields, requiredFields) == false){
-				console.log('Not all fields filled out')
+				console.log('Not all fields filled out', requiredFields, filledFields)
 
 				// ***************** IF WE ARE MISSING A FIELD(S), DISPLAY WHICH IS MISSING
-				let difference = Object.entries(requiredFields).filter(k => requiredFields[k] !== filledFields[k]);
-				console.log(difference)
+				let difference = Object.values(requiredFields).filter(k => requiredFields[k] !== filledFields[k]);
+				console.log('diff: ', difference)
 
 				// IF ALL FIELDS ARE IN STATE, CHECK FOR EMPTY VALUES
 				Object.entries(formFields).map(field => {
@@ -243,17 +255,8 @@ export default class AddSale extends React.Component {
 			} else {
 				console.log('All fields here!')
 			}
-		}
+		} else {console.log('No data in FilledFields ', filledFields)}
 		
-		// Object.entries(formFields).map(field => {
-		// 	if (field[1] == "" || !field[1]){
-		// 		console.log('missing value for ', field[0])
-		// 	} else {
-		// 		filledFields.push(field[0])
-		// 		console.log('pushed field', filledFields)
-		// 	}
-			
-		// });
 	}
 	
 	render() {
