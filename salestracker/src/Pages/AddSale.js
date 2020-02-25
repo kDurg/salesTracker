@@ -3,6 +3,7 @@ import { Col, Row, Button } from 'reactstrap';
 
 // IMPORT COMPONENTS
 import FormControlCard from '../Components/FormControlCard';
+import ToastMessage from '../Components/ToastMessages';
 
 export default class AddSale extends React.Component {
 	constructor(props) {
@@ -28,10 +29,10 @@ export default class AddSale extends React.Component {
 	}
 
 	componentDidUpdate() {
-		console.log('THis is STATE: ', this.state)		
+		console.log('THis is STATE: ', this.state)
 		this.checkFormChanges()
 	}
-	
+
 	checkFormChanges() {
 		// CHECKS TO SEE IF WE HAVE INPUTED FORM DATA TO RENDER SAVE/ CLEAR BUTTONS
 		let stateForm = this.state.form;
@@ -49,6 +50,10 @@ export default class AddSale extends React.Component {
 
 	clearForm() {
 		this.setState({ form: {} })
+	}
+
+	displayMessage(type, message, data) {
+		return <ToastMessage type='error' />
 	}
 
 	handleChange(event) {
@@ -215,50 +220,48 @@ export default class AddSale extends React.Component {
 		});
 	}
 
+	serverPostSale(data) {
+		console.log('post data: ', this.state.form)
+	}
+
 	validateRequiredFields() {
 		// LOOP THROUGH REQUIRED FIELDS AND CHECK THERE IS A SAVED VALUE IN STATE FOR EACH FIELD
 		let requiredFields = this.state.companyFormFields;
 		let formFields = this.state.form;
-		let filledFields = [];
-		let emptyFields = [];
+		let filledFields = [], emptyFields = [], missingFields;
 
 		let checker = (arr, target) => target.every(v => arr.includes(v));
 
 		// ADD FIELDS THAT HAVE VALUES TO FILLEDFIELD ARRAY
 		Object.entries(formFields).map(field => {
-			if (field[1] == "" || !field[1]){
-				console.log('No Value for ', field[0])
+			if (field[1] == "" || !field[1]) {
 				emptyFields.push(field[0])
 
 			} else {
 				filledFields.push(field[0])
-				console.log('pushed field ', filledFields)
 			}
 		});
-		
+
 		if (Object.entries(filledFields).length !== 0) {
-			
+
 			// CHECK TO SEE IF ALL REQUIRED FIELDS ARE FILLED OUT
-			if(checker(filledFields, requiredFields) == false){
-				console.log('Not all fields filled out', requiredFields, filledFields)
+			if (checker(filledFields, requiredFields) == false) {
 
-				// ***************** IF WE ARE MISSING A FIELD(S), DISPLAY WHICH IS MISSING
-				let difference = Object.values(requiredFields).filter(k => requiredFields[k] !== filledFields[k]);
-				console.log('diff: ', difference)
+				// DISPLAY MISSING FIELDS TO USER
+				missingFields = requiredFields.filter(x => !filledFields.includes(x))
+				console.log('missing fields: ', missingFields)
+				// this.displayMessage('error', 'Please fill out:', missingFields)
+				// return <ToastMessage type='error'/>
 
-				// IF ALL FIELDS ARE IN STATE, CHECK FOR EMPTY VALUES
-				Object.entries(formFields).map(field => {
-					if (field[1] == "" || !field[1]){
-						console.log('missing value for ', field[0])
-					}
-				})
 			} else {
+				// ***************************** SUBMIT DATA TO API
+				// this.serverPostSale()
 				console.log('All fields here!')
 			}
-		} else {console.log('No data in FilledFields ', filledFields)}
-		
+		} else { console.log('No data in FilledFields ', filledFields) }
+
 	}
-	
+
 	render() {
 		if (this.state.companyFormFields) {
 			const companyFields = this.state.companyFormFields;
@@ -271,6 +274,7 @@ export default class AddSale extends React.Component {
 						})}
 						{this.state.invalidForm == 'false' ?
 							<>
+							<ToastMessage type='error' />
 								<FormControlCard
 									buttonText='Save'
 									// disabled={this.state.invalidForm}
