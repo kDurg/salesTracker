@@ -1,5 +1,7 @@
 import React from 'react';
 import { Col, Row, Button } from 'reactstrap';
+import { Toast, ToastBody, ToastHeader } from 'reactstrap';
+
 
 // IMPORT COMPONENTS
 import FormControlCard from '../Components/FormControlCard';
@@ -53,7 +55,8 @@ export default class AddSale extends React.Component {
 	}
 
 	displayMessage(type, message, data) {
-		return <ToastMessage type='error' />
+		console.log('display message')
+		
 	}
 
 	handleChange(event) {
@@ -67,6 +70,8 @@ export default class AddSale extends React.Component {
 
 	handleSubmit(event) {
 		this.validateRequiredFields();
+		return <ToastMessage type='error'/>
+
 	}
 
 	renderField(type, name, id, placeholder, friendlyFieldName) {
@@ -236,7 +241,6 @@ export default class AddSale extends React.Component {
 		Object.entries(formFields).map(field => {
 			if (field[1] == "" || !field[1]) {
 				emptyFields.push(field[0])
-
 			} else {
 				filledFields.push(field[0])
 			}
@@ -247,10 +251,10 @@ export default class AddSale extends React.Component {
 			// CHECK TO SEE IF ALL REQUIRED FIELDS ARE FILLED OUT
 			if (checker(filledFields, requiredFields) == false) {
 
-				// DISPLAY MISSING FIELDS TO USER
 				missingFields = requiredFields.filter(x => !filledFields.includes(x))
 				console.log('missing fields: ', missingFields)
-				// this.displayMessage('error', 'Please fill out:', missingFields)
+				// ***************************** DISPLAY MISSING FIELDS TO USER
+				this.displayMessage('error', 'Please fill out:', missingFields)
 				// return <ToastMessage type='error'/>
 
 			} else {
@@ -274,16 +278,13 @@ export default class AddSale extends React.Component {
 						})}
 						{this.state.invalidForm == 'false' ?
 							<>
-							<ToastMessage type='error' />
 								<FormControlCard
 									buttonText='Save'
-									// disabled={this.state.invalidForm}
 									onClick={this.handleSubmit}
 									type='button'
 								/>
 								<FormControlCard
 									buttonText='Clear'
-									// disabled={this.state.invalidForm}
 									onClick={this.clearForm}
 									type='button'
 								/>
