@@ -34,9 +34,9 @@ I have set out to design a sales tracking program that can be used across multip
 
 Dashboard:
 
-![Dashboard](https://github.com/kDurg/salesTracker/blob/master/salestracker/screenshots/Capture1.PNGsalestracker/screenshots/Capture1.PNG)
+![Dashboard](https://github.com/kDurg/salesTracker/blob/master/salestracker/screenshots/Capture1.PNG)
 
 Monthly:
-    ![Dashboard](https://github.com/kDurg/salesTracker/blob/master/salestracker/screenshots/Capture2.PNGsalestracker/screenshots/Capture2.PNG)
+    ![Dashboard](https://github.com/kDurg/salesTracker/blob/master/salestracker/screenshots/Capture2.PNG)
 
 
