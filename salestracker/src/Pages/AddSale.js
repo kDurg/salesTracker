@@ -1,7 +1,5 @@
 import React from 'react';
 import { Col, Row, Button } from 'reactstrap';
-import { Toast, ToastBody, ToastHeader } from 'reactstrap';
-
 
 // IMPORT COMPONENTS
 import FormControlCard from '../Components/FormControlCard';
@@ -254,8 +252,7 @@ export default class AddSale extends React.Component {
 				missingFields = requiredFields.filter(x => !filledFields.includes(x))
 				console.log('missing fields: ', missingFields)
 				// ***************************** DISPLAY MISSING FIELDS TO USER
-				this.displayMessage('error', 'Please fill out:', missingFields)
-				// return <ToastMessage type='error'/>
+				return <ToastMessage type='error'/>
 
 			} else {
 				// ***************************** SUBMIT DATA TO API
