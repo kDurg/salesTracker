@@ -1,5 +1,7 @@
 import React from 'react';
 import { Toast, ToastBody, ToastHeader } from 'reactstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ToastMessage = (props) => {
 

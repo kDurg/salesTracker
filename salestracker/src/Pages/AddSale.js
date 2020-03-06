@@ -67,9 +67,9 @@ export default class AddSale extends React.Component {
 	}
 
 	handleSubmit(event) {
-		this.validateRequiredFields();
-		return <ToastMessage type='error'/>
-
+		let toastMessage = this.validateRequiredFields();
+		console.log(toastMessage)
+		return <ToastMessage type={toastMessage} />
 	}
 
 	renderField(type, name, id, placeholder, friendlyFieldName) {
@@ -232,6 +232,7 @@ export default class AddSale extends React.Component {
 		let requiredFields = this.state.companyFormFields;
 		let formFields = this.state.form;
 		let filledFields = [], emptyFields = [], missingFields;
+		let toastMessage;
 
 		let checker = (arr, target) => target.every(v => arr.includes(v));
 
@@ -252,15 +253,17 @@ export default class AddSale extends React.Component {
 				missingFields = requiredFields.filter(x => !filledFields.includes(x))
 				console.log('missing fields: ', missingFields)
 				// ***************************** DISPLAY MISSING FIELDS TO USER
-				return <ToastMessage type='error'/>
+				toastMessage = 'error';
 
 			} else {
 				// ***************************** SUBMIT DATA TO API
 				// this.serverPostSale()
 				console.log('All fields here!')
+				toastMessage = 'success';
 			}
-		} else { console.log('No data in FilledFields ', filledFields) }
 
+		} else { console.log('No data in FilledFields ', filledFields) }
+		return toastMessage;
 	}
 
 	render() {
