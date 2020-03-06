@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/kDurg/salesTracker/issues"
   },
-  "homepage": "https://github.com/kDurg/salesTracker#readme"
+  "homepage": "https://github.com/kDurg/salesTracker#readme",
+  "dependencies": {
+    "cors": "^2.8.5"
+  }
 }
