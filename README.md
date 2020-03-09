@@ -40,3 +40,54 @@ Monthly:
     ![Dashboard](https://github.com/kDurg/salesTracker/blob/master/salestracker/screenshots/Capture2.PNG)
 
 
+# Database Structuring:
+
+### Login Requests:
+
+All Users/ Admins-
+
+- [ ]  Company Name and unique ID, Location
+- [ ]  User Preferences
+- [ ]  Employee ID
+- [ ]  Sales Parameters
+- [ ]  Current/ Previous Month Sales Data (depending on user level)
+- [ ]  User Level
+
+Admins-
+
+- [ ]  Sales people based on default location
+- [ ]  Sales People
+
+### User Preferences:
+
+All Users - 
+
+- [ ]  Default Home Screen
+- [ ]  Dark/ Light Mode
+- [ ]  Email/ Password Changes
+
+Admins- 
+
+- [ ]  Allow Employees to see store goals/ revenue
+- [ ]  Switch Stores if other locations exist
+- [ ]  Allow Global customer look up/ sales edit
+- [ ]  Allow users to post sales data to other locations
+
+### Super Admin and Creation
+
+Access to:
+
+- [ ]  Company Name, Unique Company ID Assignment
+- [ ]  Access to view as user
+- [ ]  Access to change user preferences
+- [ ]  Import CSV for sales data
+- [ ]  'GOD MODE' - Search/ View/ Alter all
+
+### Database Structure:
+
+- [ ]  Store/ Locations
+- [ ]  Account Owner, Admins, Users
+- [ ]  Preferences
+- [ ]  Usernames and Passwords
+- [ ]  Required Sales Fields
+- [ ]  API Connectivity (Store ID, API Keys/ Headers)
