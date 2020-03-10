@@ -68,8 +68,6 @@ export default class AddSale extends React.Component {
 
 	handleSubmit(event) {
 		this.validateRequiredFields();
-		return <ToastMessage type='error'/>
-
 	}
 
 	renderField(type, name, id, placeholder, friendlyFieldName) {
@@ -223,8 +221,11 @@ export default class AddSale extends React.Component {
 		});
 	}
 
-	serverPostSale(data) {
-		console.log('post data: ', this.state.form)
+	serverPostSale() {
+		const data = this.state.form;
+		console.log('post data: ', data)
+		// ********************* NEED PROPS HERE TO BIND TO props.pushDataAPI
+
 	}
 
 	validateRequiredFields() {
@@ -256,8 +257,8 @@ export default class AddSale extends React.Component {
 
 			} else {
 				// ***************************** SUBMIT DATA TO API
-				// this.serverPostSale()
 				console.log('All fields here!')
+				// this.serverPostSale()
 			}
 		} else { console.log('No data in FilledFields ', filledFields) }
 

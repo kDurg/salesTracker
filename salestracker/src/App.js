@@ -7,15 +7,21 @@ import AddSale from './Pages/AddSale';
 
 //IMPORT COMPONENTS
 // import FormControlCard from './Components/FormControlCard';
+import ToastMessage from './Components/ToastMessages';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       apiResponse: '',
-
+      toastMessage: null,
+      userData: []
     }
+
+    this.toastMessage = this.toastMessage.bind(this);
+
   }
+
 
   callAPI() {
     fetch('http://localhost:9000/testAPI')
@@ -26,37 +32,60 @@ class App extends React.Component {
   pushDataAPI(type, data) {
     const domainURL = 'http://localhost:9000';
     const pathURL = type;
-    let params;
+    let params, user;
+
+    const options = {
+      body: JSON.stringify(user),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    }
+
+    if (this.state.userData.length() !== 0) {
+      user = {
+        companyId: this.state.userData.companyId,
+        locationId: this.state.userData.locationId,
+        userId: this.state.userData.userId,
+      }
+    }
 
     switch (type) {
-
       case 'newSale':
         // DEFINE PARAMS TO PASS TO API
         // BUNDLE JSON OBJECT TO PASS IF CHANGES ARE NEEDED
         // https://dev.to/attacomsian/introduction-to-javascript-fetch-api-4f4c
-        send(domainURL + pathURL + params)
-          .then(res => {
-
-            // ******************* SET UP REST MESSAGE FILE WITH CUSTOM MESSAGES
-            if (res.type == 'sucess') {
-              console.log('Successfully Rescorded Sale!')
-            } else if (res.type == 'fail') {
-              console.log('[ERROR] Sale Was Not Recorded: ' + res.statusCode);
-            }
-
-          })
-          .catch (err => {
-            console.log('[ERROR] Sale Was Not Recorded: ' + res.statusCode);
+        fetch(domainURL + pathURL + params, options)
+          // ******************* SET UP REST MESSAGE FILE WITH CUSTOM MESSAGES
+          .then(res => res.json())
+          .then(res => console.log(res))
+          // this.setState({ toastMessage: res});
+          .catch(err => {
+            console.log('[ERROR] ', err);
+            this.setState({ toastMessage: `${err.statusCode} Error: ${err.statusMessage}` });
           });
 
       default:
         break;
-
     }
   }
 
   componentWillMount() {
     this.callAPI();
+  }
+
+  renderToastMessage() {
+    console.log('Sending Toasty Message');
+    const toastMessage = { ...this.state.toastMessage };
+
+    this.setState({ toastMessage: null });
+    return (
+      <ToastMessage
+        statusCode={toastMessage.statusCode}
+        statusMessage={toastMessage.statusMessage}
+        statusType={toastMessage.statusType}
+      />
+    )
   }
 
   render() {
@@ -72,6 +101,9 @@ class App extends React.Component {
           userFriendlyName='Becky D.'
           userLevel='admin'
         />
+        {this.state.toastMessage !== null && this.state.toastMessage !== '' && Object.keys(this.state.toastMessage).length > 0 ? 
+          this.renderToastMessage : null
+        }
       </div>
     );
   }
