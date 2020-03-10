@@ -18,7 +18,7 @@ class App extends React.Component {
       userData: []
     }
 
-    this.toastMessage = this.toastMessage.bind(this);
+    // this.toastMessage = this.toastMessage.bind(this);  
 
   }
 
@@ -30,6 +30,7 @@ class App extends React.Component {
   }
 
   pushDataAPI(type, data) {
+    console.log('yay react app.js pushDataAPI:', type, data)
     const domainURL = 'http://localhost:9000';
     const pathURL = type;
     let params, user;
@@ -42,13 +43,13 @@ class App extends React.Component {
       method: 'POST'
     }
 
-    if (this.state.userData.length() !== 0) {
+    // if (this.state.userData.length() !== 0) {
       user = {
         companyId: this.state.userData.companyId,
         locationId: this.state.userData.locationId,
         userId: this.state.userData.userId,
       }
-    }
+    // }
 
     switch (type) {
       case 'newSale':
@@ -98,6 +99,7 @@ class App extends React.Component {
         </header>
         <h1>{this.state.apiResponse}</h1>
         <AddSale
+          pushDataAPI={(type, data) => this.pushDataAPI(type, data)}
           userFriendlyName='Becky D.'
           userLevel='admin'
         />

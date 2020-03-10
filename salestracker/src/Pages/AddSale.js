@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, Button } from 'reactstrap';
+// import { Col, Row, Button } from 'reactstrap';
 
 // IMPORT COMPONENTS
 import FormControlCard from '../Components/FormControlCard';
@@ -22,6 +22,7 @@ export default class AddSale extends React.Component {
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.renderForm = this.renderForm.bind(this);
+		this.pushDataAPI = props.pushDataAPI.bind(props)
 	}
 
 	componentDidMount() {
@@ -225,7 +226,6 @@ export default class AddSale extends React.Component {
 		const data = this.state.form;
 		console.log('post data: ', data)
 		// ********************* NEED PROPS HERE TO BIND TO props.pushDataAPI
-
 	}
 
 	validateRequiredFields() {
@@ -256,9 +256,8 @@ export default class AddSale extends React.Component {
 				return <ToastMessage type='error'/>
 
 			} else {
-				// ***************************** SUBMIT DATA TO API
-				console.log('All fields here!')
-				// this.serverPostSale()
+				console.log('All fields here!');
+				this.pushDataAPI('newSale', this.state.form)
 			}
 		} else { console.log('No data in FilledFields ', filledFields) }
 
@@ -267,6 +266,7 @@ export default class AddSale extends React.Component {
 	render() {
 		if (this.state.companyFormFields) {
 			const companyFields = this.state.companyFormFields;
+
 			return (
 				<>
 					{this.renderUserLevel(this.state.userLevel)}
