@@ -23,6 +23,38 @@ class App extends React.Component {
       .then(res => this.setState({ apiResponse: res }))
   }
 
+  pushDataAPI(type, data) {
+    const domainURL = 'http://localhost:9000';
+    const pathURL = type;
+    let params;
+
+    switch (type) {
+
+      case 'newSale':
+        // DEFINE PARAMS TO PASS TO API
+        // BUNDLE JSON OBJECT TO PASS IF CHANGES ARE NEEDED
+        // https://dev.to/attacomsian/introduction-to-javascript-fetch-api-4f4c
+        send(domainURL + pathURL + params)
+          .then(res => {
+
+            // ******************* SET UP REST MESSAGE FILE WITH CUSTOM MESSAGES
+            if (res.type == 'sucess') {
+              console.log('Successfully Rescorded Sale!')
+            } else if (res.type == 'fail') {
+              console.log('[ERROR] Sale Was Not Recorded: ' + res.statusCode);
+            }
+
+          })
+          .catch (err => {
+            console.log('[ERROR] Sale Was Not Recorded: ' + res.statusCode);
+          });
+
+      default:
+        break;
+
+    }
+  }
+
   componentWillMount() {
     this.callAPI();
   }
