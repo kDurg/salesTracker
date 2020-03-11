@@ -14,60 +14,71 @@ class App extends React.Component {
     super(props);
     this.state = {
       apiResponse: '',
-      toastMessage: null,
+      toastMessage: {},
       userData: []
     }
 
-    // this.toastMessage = this.toastMessage.bind(this);  
-
+    this.renderToastMessage = this.renderToastMessage.bind(this);
   }
 
+  componentWillMount() {
+    this.getUserData();
+  }
 
-  callAPI() {
-    fetch('http://localhost:9000/testAPI')
-      .then(res => res.text())
-      .then(res => this.setState({ apiResponse: res }))
+  // AFTER SUCCESSFUL LOGIN, GET USER DATA
+  getUserData() {
+    let userData = {
+      userID: '123',
+      userName: 'beckydurigan',
+      userFriendlyName: 'Becky Durg',
+      companyID: '333',
+      companyName: 'purebarre',
+      companyFriendlyName: 'Pure Barre',
+      companyLocation: 'broomfield',
+      userLevel: 'admin'
+    }
+    this.setState({ userData });
+
+    fetch('http://localhost:9000/login/', { method: 'GET' })
+      .then(res => console.log('Login Fetch called', res))
+      // .then(res => this.setState({ apiResponse: res }))
+      .catch(err => { console.log('[ERROR] ', err); })
   }
 
   pushDataAPI(type, data) {
     const domainURL = 'http://localhost:9000';
     const pathURL = type;
-    let params, user;
-
-    // if (this.state.userData.length() !== 0) {
-      user = {
-        companyId: this.state.userData.companyId,
-        locationId: this.state.userData.locationId,
-        userId: this.state.userData.userId,
-      }
-    // }
+    let company = this.state.userData.companyName ? this.state.userData.companyName : null;
+    let user = this.state.userData;
 
     const options = {
-      body: JSON.stringify(user),
+      body: JSON.stringify({ data, user }),
       headers: {
         'Content-Type': 'application/json'
       },
       method: 'POST'
     }
 
-
-    console.log(options)
-    params = 'thisIsParams';
-    console.log('this is the URL Path: ', `${domainURL}/${pathURL}/${params}`, options)
+    // console.log('this is the URL Path: ', `${domainURL}/sales/${pathURL}/${company}`, options)
 
     switch (type) {
-      case 'newSale':
-        // DEFINE PARAMS TO PASS TO API
-        // BUNDLE JSON OBJECT TO PASS IF CHANGES ARE NEEDED
-        // https://dev.to/attacomsian/introduction-to-javascript-fetch-api-4f4c
-        fetch(`${domainURL}/${pathURL}`, options)
-          // ******************* SET UP REST MESSAGE FILE WITH CUSTOM MESSAGES
-          .then(res => res.json())
-          .then(res => console.log(res))
-          // this.setState({ toastMessage: res});
+      case 'newsale':
+        fetch(`${domainURL}/sales/${pathURL}/${company}`, options)
+          .then(res => {
+            console.log('fetch made, res: ', res);
+
+            if (res.status === 200){
+              let toastMessage = {
+                statusCode: res.status,
+                statusMessage: 'Successfully Saved Sale',
+                statusType: 'success'
+              }
+              this.setState({ toastMessage });
+            }
+          })
           .catch(err => {
             console.log('[ERROR] ', err);
-            this.setState({ toastMessage: `${err.statusCode} Error: ${err.statusMessage}` });
+            this.setState({ toastMessage: `${err.status} Error: ${err.statusMessage}` });
           });
 
       default:
@@ -75,15 +86,14 @@ class App extends React.Component {
     }
   }
 
-  componentWillMount() {
-    this.callAPI();
-  }
-
   renderToastMessage() {
-    console.log('Sending Toasty Message');
     const toastMessage = { ...this.state.toastMessage };
+    console.log('toast: ', toastMessage)
 
-    this.setState({ toastMessage: null });
+    // if (toastMessage !== null && toastMessage !== '') {
+    //   console.log('Sending Toasty Message', this.state);
+
+    // this.setState({ toastMessage: {} });
     return (
       <ToastMessage
         statusCode={toastMessage.statusCode}
@@ -91,9 +101,14 @@ class App extends React.Component {
         statusType={toastMessage.statusType}
       />
     )
+    //   return
+    // } else {
+    //   return;
+    // }
   }
 
   render() {
+    const toastMessages = this.state.toastMessage;
     return (
       <div className="App">
         <header className="App-header">
@@ -101,15 +116,16 @@ class App extends React.Component {
             Sales Tracker
         </p>
         </header>
-        <h1>{this.state.apiResponse}</h1>
-        <AddSale
-          pushDataAPI={(type, data) => this.pushDataAPI(type, data)}
-          userFriendlyName='Becky D.'
-          userLevel='admin'
-        />
-        {this.state.toastMessage !== null && this.state.toastMessage !== '' && Object.keys(this.state.toastMessage).length > 0 ? 
-          this.renderToastMessage : null
+
+        {this.state.userData ?
+          <AddSale
+            pushDataAPI={(type, data) => this.pushDataAPI(type, data)}
+            userData={this.state.userData}
+            userLevel='admin'
+          /> : null
         }
+        {Object.keys(toastMessages).length > 0 ? this.renderToastMessage() : null}
+      
       </div>
     );
   }

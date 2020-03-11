@@ -10,6 +10,7 @@ export default class AddSale extends React.Component {
 		super(props);
 		this.state = {
 			form: {},
+			userData: props.userData,
 			companyFormFields: [],
 			searchedText: '',
 			userFriendlyName: props.userFriendlyName,
@@ -30,7 +31,7 @@ export default class AddSale extends React.Component {
 	}
 
 	componentDidUpdate() {
-		console.log('THis is STATE: ', this.state)
+		// console.log('THis is STATE: ', this.state)
 		this.checkFormChanges()
 	}
 
@@ -38,12 +39,12 @@ export default class AddSale extends React.Component {
 		// CHECKS TO SEE IF WE HAVE INPUTED FORM DATA TO RENDER SAVE/ CLEAR BUTTONS
 		let stateForm = this.state.form;
 
-		if (this.state.invalidForm == 'true') {
+		if (this.state.invalidForm === 'true') {
 			if (Object.values(stateForm).length !== 0 && Object.values(stateForm)[0] !== '') {
 				this.setState({ invalidForm: 'false' })
 			}
-		} else if (this.state.invalidForm == 'false') {
-			if (Object.values(stateForm).length == 0 || Object.values(stateForm)[0] == '') {
+		} else if (this.state.invalidForm === 'false') {
+			if (Object.values(stateForm).length === 0 || Object.values(stateForm)[0] === '') {
 				this.setState({ invalidForm: 'true' })
 			}
 		}
@@ -85,7 +86,7 @@ export default class AddSale extends React.Component {
 			);
 
 			// FOR DROPDOWN OPTIONS
-		} else if (type == 'select') {
+		} else if (type === 'select') {
 			let options = this.state.companyFormMemberships;
 			return (
 				<FormControlCard key={id}
@@ -102,11 +103,12 @@ export default class AddSale extends React.Component {
 
 	renderForm(props) {
 		if (props) {
+			// console.log(this.props)
+			let that = this;
 			let friendlyFieldName = props[0].toUpperCase() + props.slice(1);
 			let id = `sale${friendlyFieldName}`;
 			let placeholder, type;
 
-			// console.log(props)
 			switch (props) {
 				case 'cid':
 					friendlyFieldName = 'Customer ID';
@@ -141,7 +143,7 @@ export default class AddSale extends React.Component {
 					);
 
 				case 'salesperson':
-					placeholder = this.state.userFriendlyName;
+					placeholder = that.props.userData.userFriendlyName;
 					type = 'text';
 					return (
 						this.renderField(type, props, id, placeholder, friendlyFieldName)
@@ -214,18 +216,13 @@ export default class AddSale extends React.Component {
 			} else {
 				returnedMemberships = null;
 			}
+			
 		});
 
 		this.setState({
 			companyFormFields: returnedFields,
 			companyFormMemberships: returnedMemberships
 		});
-	}
-
-	serverPostSale() {
-		const data = this.state.form;
-		console.log('post data: ', data)
-		// ********************* NEED PROPS HERE TO BIND TO props.pushDataAPI
 	}
 
 	validateRequiredFields() {
@@ -238,7 +235,7 @@ export default class AddSale extends React.Component {
 
 		// ADD FIELDS THAT HAVE VALUES TO FILLEDFIELD ARRAY
 		Object.entries(formFields).map(field => {
-			if (field[1] == "" || !field[1]) {
+			if (field[1] === "" || !field[1]) {
 				emptyFields.push(field[0])
 			} else {
 				filledFields.push(field[0])
@@ -248,7 +245,7 @@ export default class AddSale extends React.Component {
 		if (Object.entries(filledFields).length !== 0) {
 
 			// CHECK TO SEE IF ALL REQUIRED FIELDS ARE FILLED OUT
-			if (checker(filledFields, requiredFields) == false) {
+			if (checker(filledFields, requiredFields) === false) {
 
 				missingFields = requiredFields.filter(x => !filledFields.includes(x))
 				console.log('missing fields: ', missingFields)
@@ -274,7 +271,7 @@ export default class AddSale extends React.Component {
 						{companyFields.map(name => {
 							return this.renderForm(name)
 						})}
-						{this.state.invalidForm == 'false' ?
+						{this.state.invalidForm === 'false' ?
 							<>
 								<FormControlCard
 									buttonText='Save'
