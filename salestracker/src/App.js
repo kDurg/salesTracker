@@ -27,6 +27,11 @@ class App extends React.Component {
 
   // AFTER SUCCESSFUL LOGIN, GET USER DATA
   getUserData() {
+
+    fetch('http://localhost:9000/login/', { method: 'GET' })
+      .then(res => console.log('Login Fetch called', res))
+      // .then(res => this.setState({ apiResponse: res }))
+      .catch(err => { console.log('[ERROR] ', err); })
     let userData = {
       userID: '123',
       userName: 'beckydurigan',
@@ -38,11 +43,6 @@ class App extends React.Component {
       userLevel: 'admin'
     }
     this.setState({ userData });
-
-    fetch('http://localhost:9000/login/', { method: 'GET' })
-      .then(res => console.log('Login Fetch called', res))
-      // .then(res => this.setState({ apiResponse: res }))
-      .catch(err => { console.log('[ERROR] ', err); })
   }
 
   pushDataAPI(type, data) {
@@ -67,7 +67,7 @@ class App extends React.Component {
           .then(res => {
             console.log('fetch made, res: ', res);
 
-            if (res.status === 200){
+            if (res.status === 200) {
               let toastMessage = {
                 statusCode: res.status,
                 statusMessage: 'Successfully Saved Sale',
@@ -125,7 +125,7 @@ class App extends React.Component {
           /> : null
         }
         {Object.keys(toastMessages).length > 0 ? this.renderToastMessage() : null}
-      
+
       </div>
     );
   }
