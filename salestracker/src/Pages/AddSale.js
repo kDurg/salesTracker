@@ -257,7 +257,7 @@ export default class AddSale extends React.Component {
 
 			} else {
 				console.log('All fields here!');
-				this.pushDataAPI('newSale', this.state.form)
+				this.pushDataAPI('newsale', this.state.form)
 			}
 		} else { console.log('No data in FilledFields ', filledFields) }
 

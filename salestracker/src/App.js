@@ -30,18 +30,9 @@ class App extends React.Component {
   }
 
   pushDataAPI(type, data) {
-    console.log('yay react app.js pushDataAPI:', type, data)
     const domainURL = 'http://localhost:9000';
     const pathURL = type;
     let params, user;
-
-    const options = {
-      body: JSON.stringify(user),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      method: 'POST'
-    }
 
     // if (this.state.userData.length() !== 0) {
       user = {
@@ -51,12 +42,25 @@ class App extends React.Component {
       }
     // }
 
+    const options = {
+      body: JSON.stringify(user),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    }
+
+
+    console.log(options)
+    params = 'thisIsParams';
+    console.log('this is the URL Path: ', `${domainURL}/${pathURL}/${params}`, options)
+
     switch (type) {
       case 'newSale':
         // DEFINE PARAMS TO PASS TO API
         // BUNDLE JSON OBJECT TO PASS IF CHANGES ARE NEEDED
         // https://dev.to/attacomsian/introduction-to-javascript-fetch-api-4f4c
-        fetch(domainURL + pathURL + params, options)
+        fetch(`${domainURL}/${pathURL}`, options)
           // ******************* SET UP REST MESSAGE FILE WITH CUSTOM MESSAGES
           .then(res => res.json())
           .then(res => console.log(res))
