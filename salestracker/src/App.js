@@ -40,6 +40,7 @@ class App extends React.Component {
       companyName: 'purebarre',
       companyFriendlyName: 'Pure Barre',
       companyLocation: 'broomfield',
+      locationID: '100',
       userLevel: 'admin'
     }
     this.setState({ userData });

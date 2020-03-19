@@ -5,28 +5,15 @@ var createError = require('http-errors');
 var express = require('express');
 var logger = require('morgan');
 var path = require('path');
-var mysql = require('mysql');
-
-var app = express();
-var dbConnection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
-  database: 'mydb'
-});
-
-dbConnection.connect();
-// TEST DB CONNECTION
-dbConnection.query('SELECT * FROM mydb.companies', (err, res, fields) => {
-  if (err) throw err;
-      console.log('DB RESULT - ', res)
-
-});
 
 var indexRouter = require('./routes/index');
 var newSaleRouter = require('./routes/newSale');
 var loginRouter = require('./routes/login');
 var usersRouter = require('./routes/users');
+var database = require('./dbQueries/dbqueries');
+
+database('connection');
+var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
