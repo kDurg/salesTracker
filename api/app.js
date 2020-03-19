@@ -5,8 +5,20 @@ var createError = require('http-errors');
 var express = require('express');
 var logger = require('morgan');
 var path = require('path');
+var mysql = require('mysql');
 
 var app = express();
+var dbConnection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'root',
+  database: 'mydb'
+});
+
+dbConnection.connect();
+// dbConnection.query()
+
+// dbConncation.end();
 
 var indexRouter = require('./routes/index');
 var newSaleRouter = require('./routes/newSale');
