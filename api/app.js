@@ -16,9 +16,12 @@ var dbConnection = mysql.createConnection({
 });
 
 dbConnection.connect();
-// dbConnection.query()
+// TEST DB CONNECTION
+dbConnection.query('SELECT * FROM mydb.companies', (err, res, fields) => {
+  if (err) throw err;
+      console.log('DB RESULT - ', res)
 
-// dbConncation.end();
+});
 
 var indexRouter = require('./routes/index');
 var newSaleRouter = require('./routes/newSale');
