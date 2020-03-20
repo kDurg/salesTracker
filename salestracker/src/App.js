@@ -4,6 +4,7 @@ import './App.css';
 
 // IMPORT PAGES FOR ROUTING
 import AddSale from './Pages/AddSale';
+import CreationTool from './Pages/CreationTool';
 
 //IMPORT COMPONENTS
 // import FormControlCard from './Components/FormControlCard';
@@ -14,10 +15,12 @@ class App extends React.Component {
     super(props);
     this.state = {
       apiResponse: '',
+      currentPage: 'creationTool',
       toastMessage: {},
       userData: []
     }
 
+    this.renderCurrentPage = this.renderCurrentPage.bind(this);
     this.renderToastMessage = this.renderToastMessage.bind(this);
   }
 
@@ -87,14 +90,36 @@ class App extends React.Component {
     }
   }
 
+  renderCurrentPage() {
+    let currentPage = this.state.currentPage;
+
+    switch (currentPage){
+
+      case 'addSale':
+        return (
+          <AddSale
+            pushDataAPI={(type, data) => this.pushDataAPI(type, data)}
+            userData={this.state.userData}
+            userLevel='admin'
+          />
+        )
+
+      case 'creationTool': 
+          return (
+            <CreationTool
+              userData = {this.state.userData}
+            />
+          )
+
+      default: break;
+    }
+
+  }
+
   renderToastMessage() {
     const toastMessage = { ...this.state.toastMessage };
     console.log('toast: ', toastMessage)
 
-    // if (toastMessage !== null && toastMessage !== '') {
-    //   console.log('Sending Toasty Message', this.state);
-
-    // this.setState({ toastMessage: {} });
     return (
       <ToastMessage
         statusCode={toastMessage.statusCode}
@@ -102,10 +127,7 @@ class App extends React.Component {
         statusType={toastMessage.statusType}
       />
     )
-    //   return
-    // } else {
-    //   return;
-    // }
+
   }
 
   render() {
@@ -118,13 +140,7 @@ class App extends React.Component {
         </p>
         </header>
 
-        {this.state.userData ?
-          <AddSale
-            pushDataAPI={(type, data) => this.pushDataAPI(type, data)}
-            userData={this.state.userData}
-            userLevel='admin'
-          /> : null
-        }
+        {this.state.userData ? this.renderCurrentPage() : null}
         {Object.keys(toastMessages).length > 0 ? this.renderToastMessage() : null}
 
       </div>

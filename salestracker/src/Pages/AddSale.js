@@ -56,7 +56,7 @@ export default class AddSale extends React.Component {
 
 	displayMessage(type, message, data) {
 		console.log('display message')
-		
+
 	}
 
 	handleChange(event) {
@@ -216,7 +216,7 @@ export default class AddSale extends React.Component {
 			} else {
 				returnedMemberships = null;
 			}
-			
+
 		});
 
 		this.setState({
@@ -250,7 +250,7 @@ export default class AddSale extends React.Component {
 				missingFields = requiredFields.filter(x => !filledFields.includes(x))
 				console.log('missing fields: ', missingFields)
 				// ***************************** DISPLAY MISSING FIELDS TO USER
-				return <ToastMessage type='error'/>
+				return <ToastMessage type='error' />
 
 			} else {
 				console.log('All fields here!');
