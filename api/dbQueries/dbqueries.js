@@ -2,7 +2,7 @@
 var mysql = require('mysql');
 
 const database = (type, data) => {
-    const dbName = 'mydb'
+    const dbName = 'salestrackerdb'
     const dbConnection = mysql.createConnection({
         host: 'localhost',
         user: 'root',
@@ -30,7 +30,7 @@ const database = (type, data) => {
 
             // dbConnection.connect();
             // TEST DB CONNECTION
-            dbConnection.query('SELECT * FROM mydb.companies', (err, res, fields) => {
+            dbConnection.query(`SELECT * FROM ${dbName}.companies`, (err, res, fields) => {
                 if (err) throw err;
                 console.log('DB COMPANIES RESULT: ', res);
             });
