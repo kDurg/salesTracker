@@ -34,6 +34,12 @@ const database = (type, data) => {
                 if (err) throw err;
                 console.log('DB COMPANIES RESULT: ', res);
             });
+
+        case 'creationTool':
+            console.log('HIT THE CREATION TOOL DB QUERY');
+
+        default: 
+            console.log('DID NOT HIT ANY DB QUERIES: ', type);
     }
 
 }

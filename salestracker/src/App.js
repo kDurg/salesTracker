@@ -28,6 +28,10 @@ class App extends React.Component {
     this.getUserData();
   }
 
+  componentDidUpdate() {
+    console.log('[LOG] State Updated: ', this.state)
+  }
+
   // AFTER SUCCESSFUL LOGIN, GET USER DATA
   getUserData() {
 
@@ -44,9 +48,45 @@ class App extends React.Component {
       companyFriendlyName: 'Pure Barre',
       companyLocation: 'broomfield',
       locationID: '100',
-      userLevel: 'admin'
+      userLevel: 'godmode'
     }
     this.setState({ userData });
+  }
+
+  getDataAPI(type, data) {
+    const domainURL = 'http://localhost:9000';
+    const pathURL = type;
+    let company = this.state.userData.companyName ? this.state.userData.companyName : null;
+    let user = this.state.userData;
+    let userLevel = Object.keys(user).length > 0 ? user.userLevel : ''
+
+    const options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'GET'
+    }
+
+    // console.log('[LOG] getDataAPI in App.js: ', type, data)
+    switch (type) {
+
+      case 'creationtool':
+        console.log('[LOG] getting creation form data')
+
+        if (userLevel === 'godmode') {
+          fetch(`${domainURL}/creationtool`, options)
+            .then(res=> {
+              return res.json();
+            })
+            .then(data => {
+              this.setState({creationToolData: data})
+            })
+            .catch(err=>{if (err) throw err});
+        } else {
+          console.log('[ERROR]: Permissions Not Valid')
+        }
+
+    }
   }
 
   pushDataAPI(type, data) {
@@ -107,6 +147,9 @@ class App extends React.Component {
       case 'creationTool': 
           return (
             <CreationTool
+              creationToolData = {this.state.creationToolData ? this.state.creationToolData : ''}
+              creationToolDataLoaded = {this.state.creationToolData ? true : false}
+              getDataAPI={(type, data) => this.getDataAPI(type, data)}
               userData = {this.state.userData}
             />
           )
