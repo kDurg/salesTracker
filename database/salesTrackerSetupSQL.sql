@@ -5,19 +5,19 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema salestrackerdb
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema salestrackerdb
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `salestrackerdb` DEFAULT CHARACTER SET utf8 ;
+USE `salestrackerdb` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`companies`
+-- Table `salestrackerdb`.`companies`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`companies` (
+CREATE TABLE IF NOT EXISTS `salestrackerdb`.`companies` (
   `id` INT NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `companyid` INT NOT NULL,
@@ -31,9 +31,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`companyLocations`
+-- Table `salestrackerdb`.`companyLocations`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`companyLocations` (
+CREATE TABLE IF NOT EXISTS `salestrackerdb`.`companyLocations` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `companyid` INT NOT NULL,
   `locationid` INT NOT NULL,
@@ -49,9 +49,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`userData`
+-- Table `salestrackerdb`.`userData`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`userData` (
+CREATE TABLE IF NOT EXISTS `salestrackerdb`.`userData` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `companyid` INT NOT NULL,
   `locationid` INT NOT NULL,
@@ -69,9 +69,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`salesParams`
+-- Table `salestrackerdb`.`salesParams`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`salesParams` (
+CREATE TABLE IF NOT EXISTS `salestrackerdb`.`salesParams` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `companyid` INT NOT NULL,
   `locationid` INT NOT NULL,
@@ -91,9 +91,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`salesData`
+-- Table `salestrackerdb`.`salesData`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`salesData` (
+CREATE TABLE IF NOT EXISTS `salestrackerdb`.`salesData` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `companyid` INT NOT NULL,
   `locationid` INT NOT NULL,
@@ -114,9 +114,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`salesCommission`
+-- Table `salestrackerdb`.`salesCommission`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`salesCommission` (
+CREATE TABLE IF NOT EXISTS `salestrackerdb`.`salesCommission` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `companyid` INT NOT NULL,
   `userid` INT NOT NULL,
