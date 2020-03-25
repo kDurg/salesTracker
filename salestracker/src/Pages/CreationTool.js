@@ -37,110 +37,85 @@ export default class CreationTool extends React.Component {
 	}
 
 	renderField(type, props) {
-		console.log('RENDER FIELD: ', type, props)
+		console.log('RENDER FIELD: ', type, props);
 
 		if (type !== 'select') {
+			let data = {
+				id: props.name,
+				friendlyFieldName: props.description,
+				type: props.formType,
+				name: props.name,
+				placeholder: props.placeholder,
+				handleChange: '',
+				value: ''
+			};
 			return (
-
-				// ************ NEED TO DEFINE DATA
 				<FormControlCard key={props.name}
-					data={props}
+					data={data}
 					type='standardField'
 				/>
-			)
+			);
+		} else {
+			return (<h5>Uh Oh. {type}</h5>)
 		}
 	}
 
 	renderForm(props) {
 		if (props) {
+			let fieldsGroup = props[0];
 
-			switch (props[0]) {
+			switch (fieldsGroup) {
 
 				case 'companyDataFields':
+					let companies = props[1];
+					return (
+						<div className='formGroup'>
+							<h3 className='formGroupHeader'>Company</h3>
+							{companies.map(company => {
+								let type = 'text';
+								return (this.renderField(type, company));
+							})
+							}
+						</div>
+					)
+					break;
 
-					let field = props[1];
-					console.log('fields data: ', field)
-					field.map(subField => {
-						let data = {
-							id: subField.tableName,
-							friendlyFieldName: subField.description,
-							type: 'text',
-							name: subField.tableName,
-							placeholder: subField.placeholder,
-							handleChange: '',
-							value: ''
+				case 'locationDataFields':
+					let locations = props[1];
+					let that = this;
+					return (
+						<div className='formGroup'>
+							<h3 className='formGroupHeader'>Locations</h3>
 
-						};
-						this.renderField(data.type, subField)
-					})
+							{locations.map(location => {
+								console.log('locationDataFields LOCATION', location)
+
+								return (
+									Object.entries(location).map(locationField => {
+										// console.log('locationDataFields', locationField[1])
+										let type = 'text'
+										return(that.renderField(type, locationField[1]))
+									})
+								)
+							})}
+						</div>
+					)
 
 				default:
-					return <p>'DEFAULT CASE'</p>
-
-
+					return <p>'DEFAULT CASE {fieldsGroup}'</p>
 			}
 
 		}
 	}
 
-	// renderPage() {
-	// 	// console.log('current state', this.state);
-
-	// 	if (this.props.creationToolDataLoaded && this.props.creationToolData !== '') {
-	// 		return (
-	// 			<div className='creationToolPage'>
-	// 				{/* <LeftBar /> */}
-	// 				<div className='creationToolForm'>
-	// 					{/* <FormControlCard
-	// 						type='dropdownField'
-	// 						cardTitle='Company: '
-	// 						data=
-	// 					/> */}
-	// 					{/* <FormControlCard
-	// 						cardTitle='Company Data'
-	// 						data={this.renderCompanyData}
-	// 					/>
-	// 					<FormControlCard
-	// 						cardTitle='Locations'
-	// 					/>
-	// 					<FormControlCard
-	// 						cardTitle='Users'
-	// 					/>
-	// 					<FormControlCard
-	// 						cardTitle='Services'
-	// 					/> */}
-	// 				</div>
-
-	// 				{this.state.invalidForm === false ?
-	// 					<>
-	// 						<FormControlCard
-	// 							buttonText='Save'
-	// 							// onClick={this.handleSubmit}
-	// 							type='button'
-	// 						/>
-	// 						<FormControlCard
-	// 							buttonText='Clear'
-	// 							// onClick={this.clearForm}
-	// 							type='button'
-	// 						/>
-	// 					</>
-	// 					: <h1>invalid form: {this.state.invalidForm}</h1>}
-
-	// 			</div>
-	// 		)
-	// 	}
-
-
-	// }
-
 	render() {
 		if (this.props.creationToolDataLoaded && this.props.userData.userLevel === 'godmode') {
-			console.log('PROPS: ', this.props.userData.userLevel, this.props, this.state)
+			// console.log('PROPS: ', this.props.userData.userLevel, this.props, this.state)
 			let creationToolSegments = this.props.creationToolData;
 
 			return (
 				<>
-					<div className='creationToolDiv'>
+					<div className='creationToolContainer'>
 						<h1>Creation Tool</h1>
 						{Object.entries(creationToolSegments).map(segment => {
 							return this.renderForm(segment)

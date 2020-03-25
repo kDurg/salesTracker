@@ -12,6 +12,14 @@ code {
     monospace;
 }
 
-.creationToolForm{
-  border: solid 2px gray;
+.formGroup{
+  border: solid 1px gray;
+  border-radius: 10px;
+  margin-top: 5px;
+  padding: 10px;
+  text-align: left;
+}
+
+.formGroupHeader{
+  text-align: center;
 }
