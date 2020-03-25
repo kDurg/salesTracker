@@ -71,7 +71,7 @@ class App extends React.Component {
     switch (type) {
 
       case 'creationtool':
-        console.log('[LOG] getting creation form data')
+        // console.log('[LOG] getting creation form data')
 
         if (userLevel === 'godmode') {
           fetch(`${domainURL}/creationtool`, options)
