@@ -80,7 +80,7 @@ export default class AddSale extends React.Component {
 				<FormControlCard key={id}
 					data={data}
 					handleChange={(data) => this.handleChange(data)}
-					type='standardField'
+					type='textField'
 					value={this.state.form[name]}
 				/>
 			);

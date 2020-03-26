@@ -17,7 +17,7 @@ export default class CreationTool extends React.Component {
 		};
 
 		// BIND THIS ACROSS FUNCTIONS
-		this.renderForm = this.renderForm.bind(this);
+		this.renderNewForm = this.renderNewForm.bind(this);
 		this.getDataAPI = props.getDataAPI.bind(props);
 		this.props = props;
 	}
@@ -36,8 +36,8 @@ export default class CreationTool extends React.Component {
 		this.getDataAPI('creationtool');
 	}
 
-	renderField(type, props) {
-		console.log('RENDER FIELD: ', type, props);
+	renderNewField(type, props) {
+		// console.log('RENDER FIELD: ', type, props);
 
 		if (type !== 'select') {
 			let data = {
@@ -52,7 +52,7 @@ export default class CreationTool extends React.Component {
 			return (
 				<FormControlCard key={props.name}
 					data={data}
-					type='standardField'
+					type='textField'
 				/>
 			);
 		} else {
@@ -60,51 +60,34 @@ export default class CreationTool extends React.Component {
 		}
 	}
 
-	renderForm(props) {
+	renderNewForm(props) {
 		if (props) {
-			let fieldsGroup = props[0];
+			// console.log('[LOG] fieldsgroup PROPS: ', props)
+			let fieldType, sectionName;
+			let requiredFields = props[1];
+			let sectionDBName = props[0];
 
-			switch (fieldsGroup) {
-
-				case 'companyDataFields':
-					let companies = props[1];
-					return (
-						<div className='formGroup'>
-							<h3 className='formGroupHeader'>Company</h3>
-							{companies.map(company => {
-								let type = 'text';
-								return (this.renderField(type, company));
-							})
-							}
-						</div>
-					)
-					break;
-
-				case 'locationDataFields':
-					let locations = props[1];
-					let that = this;
-					return (
-						<div className='formGroup'>
-							<h3 className='formGroupHeader'>Locations</h3>
-
-							{locations.map(location => {
-								console.log('locationDataFields LOCATION', location)
-
-								return (
-									Object.entries(location).map(locationField => {
-										// console.log('locationDataFields', locationField[1])
-										let type = 'text'
-										return(that.renderField(type, locationField[1]))
-									})
-								)
-							})}
-						</div>
-					)
-
-				default:
-					return <p>'DEFAULT CASE {fieldsGroup}'</p>
+			let sectionTranslation = {
+				companyDataFields: 'Company Information',
+				locationDataFields: 'Location Settings',
+				userDataFields: 'User Settings',
+				servicesDataFields: 'Services'
 			}
 
+			Object.entries(sectionTranslation).map(fieldName => {
+				if (fieldName[0] === sectionDBName){
+					sectionName = fieldName[1]
+				}
+			})
+
+			return (
+				<div className='formGroup'>
+					<h3 className='formGroupHeader'>{sectionName}</h3>
+					{requiredFields.map(requiredField => {
+						return (this.renderNewField(fieldType, requiredField));
+					})}
+				</div>
+			)
 		}
 	}
 
@@ -118,7 +101,7 @@ export default class CreationTool extends React.Component {
 					<div className='creationToolContainer'>
 						<h1>Creation Tool</h1>
 						{Object.entries(creationToolSegments).map(segment => {
-							return this.renderForm(segment)
+							return this.renderNewForm(segment)
 						})
 						}
 					</div>

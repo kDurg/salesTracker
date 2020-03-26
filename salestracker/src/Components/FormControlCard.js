@@ -39,7 +39,7 @@ const FormControlCard = (props) => {
 				</option>
 			);
 
-		case 'standardField':
+		case 'textField':
 			return (
 				<FormGroup key={data.id}>
 					<Label for={data.id}>{data.friendlyFieldName}</Label>
