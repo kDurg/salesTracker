@@ -74,7 +74,7 @@ class App extends React.Component {
         // console.log('[LOG] getting creation form data')
 
         if (userLevel === 'godmode') {
-          fetch(`${domainURL}/creationtool`, options)
+          fetch(`${domainURL}/creationtool/requiredfields`, options)
             .then(res=> {
               return res.json();
             })

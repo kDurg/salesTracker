@@ -9,7 +9,7 @@ router.use((req, res, next) => {
 });
 
 router
-    .route('/')
+    .route('/requiredfields')
     .get((req, res) => {
 
         let companyDataFields = [];
@@ -18,12 +18,14 @@ router
         let servicesDataFields = [];
         let requiredDataFields = {};
 
+
         // *************** DUMMY DATA ***************
         // RETURN ALL COMPANIES
         companyDataFields = [
             { description: 'Company Name', tableName: 'friendlyname', placeholder: 'Kyles Cats', valueType: 'string', formType: 'textInput' },
-            { description: 'Company ID', tableName: 'companyid', placeholder: '123456', valueType: 'int', formType: 'numberInput' },
-            { description: 'Company DB Name', tableName: 'name', placeholder: 'kylescats', valueType: 'string', formType: 'textInput' },
+            { description: 'Company Admin', tableName: 'companyadmin', placeholder: 'John Doe', valueType: 'string', formType: 'dropdownField' },
+            // { description: 'Company ID', tableName: 'companyid', placeholder: '123456', valueType: 'int', formType: 'numberInput' },
+            // { description: 'Company DB Name', tableName: 'name', placeholder: 'kylescats', valueType: 'string', formType: 'textInput' },
         ]
 
         // RETRIEVE ALL COMPANY LOCATIONS AND SETTINGS
@@ -65,7 +67,7 @@ router
             { description: 'Sales Parameter', tableName: 'param10', placeholder: 'Parameter Name', valueType: 'string', formType: 'textInput' },
         ]
 
-        // RETRIEVE SALES COMMISSION
+        // ******************** RETRIEVE SALES COMMISSION
 
         requiredDataFields = {
             companyDataFields,

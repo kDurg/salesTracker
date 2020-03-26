@@ -29,17 +29,28 @@ export default class CreationTool extends React.Component {
 	}
 
 	componentDidUpdate() {
-		// console.log('STATE CHANGED: ', this.state)
+		// console.log('[LOG] CDU STATE CHANGED: ', this.state)
 	}
 
 	getCreationToolFormData() {
 		this.getDataAPI('creationtool');
+		this.getDataAPI('')
+	}
+
+	renderDropdownData(props) {
+		console.log('[LOG] getDropdownData Props: ', props)
+		// MAKE A CALL TO GET ALL DROPDOWN DATA IF EXISTS
+
+		// switch (props.tableName) {
+
+		// 	case 'companyadmin':				
+		// }
 	}
 
 	renderNewField(type, props) {
-		// console.log('RENDER FIELD: ', type, props);
+		console.log('RENDER FIELD: ', type, props);
 
-		if (type !== 'select') {
+		if (props.formType !== 'dropdownField') {
 			let data = {
 				id: props.name,
 				friendlyFieldName: props.description,
@@ -56,7 +67,16 @@ export default class CreationTool extends React.Component {
 				/>
 			);
 		} else {
-			return (<h5>Uh Oh. {type}</h5>)
+			// let data = this.renderDropdownData(props);
+			// need to get dropdown options for field
+			return(<h3>Dropdown Option</h3>)
+			
+			// return (
+			// 	<FormControlCard key={props.name}
+			// 		data={data}
+			// 		type='dropdownField'
+			// 	/>
+			// );
 		}
 	}
 
@@ -83,6 +103,7 @@ export default class CreationTool extends React.Component {
 			return (
 				<div className='formGroup'>
 					<h3 className='formGroupHeader'>{sectionName}</h3>
+					<hr/>
 					{requiredFields.map(requiredField => {
 						return (this.renderNewField(fieldType, requiredField));
 					})}

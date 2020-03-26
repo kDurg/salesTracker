@@ -22,4 +22,6 @@ code {
 
 .formGroupHeader{
   text-align: center;
+  margin: 0px;
+  background-color: lightgray;
 }
