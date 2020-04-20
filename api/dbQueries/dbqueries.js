@@ -6,7 +6,7 @@ const database = (type, data) => {
     const dbConnection = mysql.createConnection({
         host: 'localhost',
         user: 'root',
-        password: 'root',
+        password: 'password1',
         database: dbName
     });
 

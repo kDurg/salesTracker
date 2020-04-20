@@ -71,9 +71,10 @@ class App extends React.Component {
     switch (type) {
 
       case 'creationtool':
-        // console.log('[LOG] getting creation form data')
+        console.log('[LOG] getting creation form data', data)
 
         if (userLevel === 'godmode') {
+          // GET REQUIRED FIELDS
           fetch(`${domainURL}/creationtool/requiredfields`, options)
             .then(res=> {
               return res.json();
@@ -82,6 +83,17 @@ class App extends React.Component {
               this.setState({creationToolData: data})
             })
             .catch(err=>{if (err) throw err});
+
+          // GET DATA FOR DROPDOWN OPTIONS
+          fetch(`${domainURL}/creationtool/requiredfieldsdata`, options)
+          .then(res=> {
+            return res.json();
+          })
+          .then(data => {
+            this.setState({creationToolDropdownData: data})
+          })
+          .catch(err=>{if (err) throw err});
+
         } else {
           console.log('[ERROR]: Permissions Not Valid')
         }
@@ -148,6 +160,7 @@ class App extends React.Component {
           return (
             <CreationTool
               creationToolData = {this.state.creationToolData ? this.state.creationToolData : ''}
+              creationToolDropdownData = {this.state.creationToolDropdownData ? this.state.creationToolDropdownData: ''}
               creationToolDataLoaded = {this.state.creationToolData ? true : false}
               getDataAPI={(type, data) => this.getDataAPI(type, data)}
               userData = {this.state.userData}

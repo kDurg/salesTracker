@@ -34,21 +34,32 @@ export default class CreationTool extends React.Component {
 
 	getCreationToolFormData() {
 		this.getDataAPI('creationtool');
-		this.getDataAPI('')
+		this.getDataAPI('');
 	}
 
 	renderDropdownData(props) {
-		console.log('[LOG] getDropdownData Props: ', props)
+		// console.log('[LOG] getDropdownData Props: ', props)
 		// MAKE A CALL TO GET ALL DROPDOWN DATA IF EXISTS
 
 		// switch (props.tableName) {
 
-		// 	case 'companyadmin':				
+		// 	case 'companyadmin':
+
+		// case 'owerid': location owner
+
+		// case 'locationstate':
+
+		// case 'userlevel':
+
+		// case 'locationid':
+
+		// case 'defaultscreen':
+
 		// }
 	}
 
-	renderNewField(type, props) {
-		console.log('RENDER FIELD: ', type, props);
+	renderNewField(props, dropdownData) {
+		// console.log('RENDER FIELD: ', props);
 
 		if (props.formType !== 'dropdownField') {
 			let data = {
@@ -67,10 +78,11 @@ export default class CreationTool extends React.Component {
 				/>
 			);
 		} else {
-			// let data = this.renderDropdownData(props);
-			// need to get dropdown options for field
-			return(<h3>Dropdown Option</h3>)
-			
+			// ************** COMPARE TABLE NAMES WITH DROPDOWN DATA TO RENDER CORRECT DROPDOWN OPTIONS
+			let data = dropdownData;
+			console.log('DROPDOWN OPTION', data);
+			return (<h3>Dropdown: {props.tableName}</h3>);
+
 			// return (
 			// 	<FormControlCard key={props.name}
 			// 		data={data}
@@ -80,10 +92,10 @@ export default class CreationTool extends React.Component {
 		}
 	}
 
-	renderNewForm(props) {
+	renderNewForm(props, creationToolDropdownData) {
 		if (props) {
-			// console.log('[LOG] fieldsgroup PROPS: ', props)
-			let fieldType, sectionName;
+			console.log('[LOG] fieldsgroup PROPS: ', props, creationToolDropdownData)
+			let sectionName;
 			let requiredFields = props[1];
 			let sectionDBName = props[0];
 
@@ -95,34 +107,38 @@ export default class CreationTool extends React.Component {
 			}
 
 			Object.entries(sectionTranslation).map(fieldName => {
-				if (fieldName[0] === sectionDBName){
+				if (fieldName[0] === sectionDBName) {
 					sectionName = fieldName[1]
 				}
 			})
 
-			return (
-				<div className='formGroup'>
-					<h3 className='formGroupHeader'>{sectionName}</h3>
-					<hr/>
-					{requiredFields.map(requiredField => {
-						return (this.renderNewField(fieldType, requiredField));
-					})}
-				</div>
-			)
+			// ************* NEED TO SET UP A FILTER TO GET DROPDOWN DATA IF REQUIRED BEFORE RENDERING
+
+				return (
+					<div className='formGroup'>
+						<h3 className='formGroupHeader'>{sectionName}</h3>
+						<hr />
+						{requiredFields.map(requiredField => {
+							return (this.renderNewField(requiredField, creationToolDropdownData));
+						})}
+					</div>
+				)
 		}
 	}
 
 	render() {
 		if (this.props.creationToolDataLoaded && this.props.userData.userLevel === 'godmode') {
-			// console.log('PROPS: ', this.props.userData.userLevel, this.props, this.state)
+			console.log('PROPS: ', this.props.userData.userLevel, this.props, this.state)
 			let creationToolSegments = this.props.creationToolData;
+			let creationToolDropdownData = this.props.creationToolDropdownData;
 
 			return (
 				<>
 					<div className='creationToolContainer'>
 						<h1>Creation Tool</h1>
 						{Object.entries(creationToolSegments).map(segment => {
-							return this.renderNewForm(segment)
+							console.log('segment', segment)
+							return this.renderNewForm(segment, creationToolDropdownData)
 						})
 						}
 					</div>

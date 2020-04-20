@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const database = require('../dbQueries/dbqueries');
 
+const states = require('../jsonModels/states.json');
 
 router.use((req, res, next) => {
     console.log(req.url, "@", Date.now());
@@ -17,7 +18,6 @@ router
         let userDataFields = [];
         let servicesDataFields = [];
         let requiredDataFields = {};
-
 
         // *************** DUMMY DATA ***************
         // RETURN ALL COMPANIES
@@ -78,6 +78,35 @@ router
         // console.log('[API LOG] req data fields: ', JSON.stringify(requiredDataFields))
 
         res.send(JSON.stringify(requiredDataFields));
+    });
+
+router
+    .route('/requiredfieldsdata')
+    .get((req, res) => {
+        let creationToolDropdownData = {};
+        let adminList = []; // ALL ADMIN LEVEL ACCOUNTS FOR COMPANY
+        let statesList = {};
+        let userLevels = [];
+        let companyLocations = [];
+        let defaultScreen = [];
+
+        // *************** DUMMY DATA ***************
+        // RETRIEVE DEFAULT SCREEN OPTIONS
+        defaultScreen = ['addsale', 'creationtool', 'dashboard'];
+
+        // RETRIEVE STATES FROM JSON
+        statesList = states;
+
+        // RETRIEVE USER LEVEL OPTIONS
+        userLevels = ['basic', 'admin', 'superadmin', 'godmode'];
+
+        requiredDataFieldsData = {
+            defaultScreen,
+            statesList,
+            userLevels
+        }
+
+        res.send(JSON.stringify(requiredDataFieldsData));
     });
 
 // router
