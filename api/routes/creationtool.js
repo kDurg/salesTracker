@@ -85,25 +85,25 @@ router
     .get((req, res) => {
         let creationToolDropdownData = {};
         let adminList = []; // ALL ADMIN LEVEL ACCOUNTS FOR COMPANY
-        let statesList = {};
-        let userLevels = [];
+        let stateslist = {};
+        let userlevel = [];
         let companyLocations = [];
-        let defaultScreen = [];
+        let defaultscreen = [];
 
         // *************** DUMMY DATA ***************
         // RETRIEVE DEFAULT SCREEN OPTIONS
-        defaultScreen = ['addsale', 'creationtool', 'dashboard'];
+        defaultscreen = ['addsale', 'creationtool', 'dashboard'];
 
         // RETRIEVE STATES FROM JSON
-        statesList = states;
+        stateslist = states;
 
         // RETRIEVE USER LEVEL OPTIONS
-        userLevels = ['basic', 'admin', 'superadmin', 'godmode'];
+        userlevel = ['basic', 'admin', 'superadmin', 'godmode'];
 
         requiredDataFieldsData = {
-            defaultScreen,
-            statesList,
-            userLevels
+            defaultscreen,
+            stateslist,
+            userlevel
         }
 
         res.send(JSON.stringify(requiredDataFieldsData));

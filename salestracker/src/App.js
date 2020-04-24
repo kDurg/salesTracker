@@ -15,7 +15,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       apiResponse: '',
-      currentPage: 'creationTool',
+      currentPage: 'addSale',
       toastMessage: {},
       userData: []
     }
@@ -71,7 +71,7 @@ class App extends React.Component {
     switch (type) {
 
       case 'creationtool':
-        console.log('[LOG] getting creation form data', data)
+        // console.log('[LOG] getting creation form data', data)
 
         if (userLevel === 'godmode') {
           // GET REQUIRED FIELDS

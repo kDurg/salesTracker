@@ -11,6 +11,7 @@ const FormControlCard = (props) => {
 			)
 
 		case 'dropdownField':
+			console.log('dropdown field', props)
 			let options = props.dropdownOptions;
 
 			return (
@@ -19,6 +20,7 @@ const FormControlCard = (props) => {
 					<Input type={data.type} name={data.name} id={data.id} onChange={props.onChange} placeholder={data.placeholder}>
 						<option selected disabled value='null'>{props.placeholder}</option>
 						{options.map(membership => {
+							console.log('passed membership:', membership)
 							return (
 								<FormControlCard key={membership}
 									option={membership}

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Button, Input, Table, Form, FormGroup, Label, FormText } from 'reactstrap';
+// import { Button, Input, Table, Form, FormGroup, Label, FormText } from 'reactstrap';
 
 // IMPORT COMPONENTS
 import FormControlCard from '../Components/FormControlCard';
-import LeftBar from '../Components/LeftBar';
-import ToastMessage from '../Components/ToastMessages';
+// import LeftBar from '../Components/LeftBar';
+// import ToastMessage from '../Components/ToastMessages';
 
 export default class CreationTool extends React.Component {
 	constructor(props) {
@@ -17,7 +17,7 @@ export default class CreationTool extends React.Component {
 		};
 
 		// BIND THIS ACROSS FUNCTIONS
-		this.renderNewForm = this.renderNewForm.bind(this);
+		this.renderForm = this.renderForm.bind(this);
 		this.getDataAPI = props.getDataAPI.bind(props);
 		this.props = props;
 	}
@@ -45,7 +45,7 @@ export default class CreationTool extends React.Component {
 
 		// 	case 'companyadmin':
 
-		// case 'owerid': location owner
+		// case 'ownerid': location owner
 
 		// case 'locationstate':
 
@@ -58,43 +58,76 @@ export default class CreationTool extends React.Component {
 		// }
 	}
 
-	renderNewField(props, dropdownData) {
-		// console.log('RENDER FIELD: ', props);
+	renderField(props, dropdownData) {
+		// console.log('RENDER FIELD: ', props.formType);
 
-		if (props.formType !== 'dropdownField') {
-			let data = {
-				id: props.name,
-				friendlyFieldName: props.description,
-				type: props.formType,
-				name: props.name,
-				placeholder: props.placeholder,
-				handleChange: '',
-				value: ''
-			};
-			return (
-				<FormControlCard key={props.name}
-					data={data}
-					type='textField'
-				/>
-			);
-		} else {
-			// ************** COMPARE TABLE NAMES WITH DROPDOWN DATA TO RENDER CORRECT DROPDOWN OPTIONS
-			let data = dropdownData;
-			console.log('DROPDOWN OPTION', data);
-			return (<h3>Dropdown: {props.tableName}</h3>);
+		switch (props.formType) {
 
-			// return (
-			// 	<FormControlCard key={props.name}
-			// 		data={data}
-			// 		type='dropdownField'
-			// 	/>
-			// );
+			case 'dropdownField':
+				if (dropdownData) {
+					let data = {};
+					let dropdown;
+					Object.entries(dropdownData).map(dropdownOption => {
+						// console.log(dropdownOption, 'dropdown option')
+
+						if (dropdownOption[0].toLowerCase() === props.tableName.toLowerCase()) {
+							console.log('YAYAYAYAYAYAYAYAYA', props.tableName)
+
+							let dropdownData = {
+								id: props.name ? props.name : props.tableName,
+								friendlyFieldName: props.description ? props.description : '',
+								type: props.formType ? props.formType : '',
+								name: props.name ? props.name : '',
+								placeholder: props.placeholder ? props.placeholder : '',
+								handleChange: '',
+								value: ''
+							};
+
+							// ************ GETTING STUCK DUE TO NESTING, RENDERING SHOULD HAPPEN HERE AND BE PASSED UP
+
+							data = dropdownData;
+							// return data
+						}
+
+					});
+
+					// ********************* THIS IS OUTSIDE OF THE MAP AND ONLY RETURNS THE LAST ITEM
+					if (data.length > 0) {
+						console.log('data::: ', data)
+						return (
+							<FormControlCard key={props.description}
+								dropdownOptions={data}
+								type='dropdownField'
+							/>
+						);
+
+					}
+
+
+				}
+
+			default:
+				let data = {
+					id: props.name,
+					friendlyFieldName: props.description,
+					type: props.formType,
+					name: props.name,
+					placeholder: props.placeholder,
+					handleChange: '',
+					value: ''
+				};
+				return (
+					<FormControlCard key={props.name}
+						data={data}
+						type='textField'
+					/>
+				);
 		}
 	}
 
-	renderNewForm(props, creationToolDropdownData) {
+	renderForm(props, creationToolDropdownData) {
 		if (props) {
-			console.log('[LOG] fieldsgroup PROPS: ', props, creationToolDropdownData)
+			// console.log('[LOG] fieldsgroup PROPS: ', props, creationToolDropdownData)
 			let sectionName;
 			let requiredFields = props[1];
 			let sectionDBName = props[0];
@@ -112,17 +145,15 @@ export default class CreationTool extends React.Component {
 				}
 			})
 
-			// ************* NEED TO SET UP A FILTER TO GET DROPDOWN DATA IF REQUIRED BEFORE RENDERING
-
-				return (
-					<div className='formGroup'>
-						<h3 className='formGroupHeader'>{sectionName}</h3>
-						<hr />
-						{requiredFields.map(requiredField => {
-							return (this.renderNewField(requiredField, creationToolDropdownData));
-						})}
-					</div>
-				)
+			return (
+				<div className='formGroup'>
+					<h3 className='formGroupHeader'>{sectionName}</h3>
+					<hr />
+					{requiredFields.map(requiredField => {
+						return (this.renderField(requiredField, creationToolDropdownData));
+					})}
+				</div>
+			)
 		}
 	}
 
@@ -137,8 +168,8 @@ export default class CreationTool extends React.Component {
 					<div className='creationToolContainer'>
 						<h1>Creation Tool</h1>
 						{Object.entries(creationToolSegments).map(segment => {
-							console.log('segment', segment)
-							return this.renderNewForm(segment, creationToolDropdownData)
+							// console.log('segment', segment)
+							return this.renderForm(segment, creationToolDropdownData)
 						})
 						}
 					</div>
