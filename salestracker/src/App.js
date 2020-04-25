@@ -15,7 +15,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       apiResponse: '',
-      currentPage: 'addSale',
+      currentPage: 'creationTool',
       toastMessage: {},
       userData: []
     }

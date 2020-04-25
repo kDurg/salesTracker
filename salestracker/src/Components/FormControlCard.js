@@ -17,7 +17,7 @@ const FormControlCard = (props) => {
 			return (
 				<FormGroup key={data.id}>
 					<Label for={data.id}>{data.friendlyFieldName}</Label>
-					<Input type={data.type} name={data.name} id={data.id} onChange={props.onChange} placeholder={data.placeholder}>
+					<select type={data.type} name={data.name} id={data.id} onChange={props.onChange} placeholder={data.placeholder}>
 						<option selected disabled value='null'>{props.placeholder}</option>
 						{options.map(membership => {
 							console.log('passed membership:', membership)
@@ -29,7 +29,7 @@ const FormControlCard = (props) => {
 								/>
 							)
 						})}
-					</Input>
+					</select>
 				</FormGroup>
 			);
 
