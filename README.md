@@ -1,5 +1,5 @@
 # Current Task
-- Set up business creation tool interface (Wizard style or Expanding fields)
+- Set up business creation tool interface (Expanding fields)
 - Adjust commission database to allow for commission groups and tiers
 - Set up dynamic dropdowns in creation tool
 
