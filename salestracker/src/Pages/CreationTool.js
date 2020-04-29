@@ -63,18 +63,39 @@ export default class CreationTool extends React.Component {
 	}
 
 	renderField(props, dropdownData) {
-		// console.log('RENDER FIELD: ', props, dropdownData);
-
+		let data;
 		switch (props.formType) {
-
+			
 			case 'dropdownField':
+				console.log('RENDER FIELD: ',  dropdownData);
 				if (dropdownData) {
-					let data = {};
+
+					// need to match dropdown data to field 
+					let dropdownOptions = [];
 					console.log('YAYAYAYAYAYAYAYA', props, dropdownData)
+
+					data = {
+						id: props.name,
+						friendlyFieldName: props.description,
+						type: props.formType,
+						name: props.name,
+						placeholder: props.placeholder,
+						handleChange: '',
+						value: ''
+					};
+
+					Object.entries(dropdownData).map(option=> {
+						if (option[1] === props.tableName) {
+							console.log('THIS IS THE OPTION', option)
+							
+						}
+					})
+
 					return (
 						<FormControlCard key={props.name} 
 							data={data}
-							type='dropdownOption'
+							dropdownOptions={dropdownOptions}
+							type='dropdownField'
 							onChange={this.handleChange}
 						/>
 					)
@@ -82,7 +103,7 @@ export default class CreationTool extends React.Component {
 				}
 
 			default:
-				let data = {
+				data = {
 					id: props.name,
 					friendlyFieldName: props.description,
 					type: props.formType,
@@ -132,9 +153,19 @@ export default class CreationTool extends React.Component {
 				
 				// CHECK TO SEE IF WE HAVE DROPDOWN OPTIONS FOR MATCHING FIELDS
 				if (formType.toLowerCase() === 'dropdownfield'){
+					// for (let [key, value] in Object.entries(creationToolDropdownData)) {
+					// 	console.log('asdfasdfasdfasdfasdf', tableName, creationToolDropdownData, [key], [value])
+					// 	// if (tableName.toLowerCase() === creationToolDropdownData[key]) {
+					// 	// }
+
+					// }
+
 					Object.keys(creationToolDropdownData).map(dropdownDataField => {
 						if (tableName.toLowerCase() === dropdownDataField.toLowerCase()) {
 							console.log('field name: ', fieldData);
+							console.log('dropdownDataField: ', dropdownDataField, creationToolDropdownData);
+
+
 							dropdownFieldData = dropdownDataField;
 							hasDropdown = true;
 						}
