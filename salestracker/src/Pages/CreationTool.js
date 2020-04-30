@@ -65,14 +65,9 @@ export default class CreationTool extends React.Component {
 	renderField(props, dropdownData) {
 		let data;
 		switch (props.formType) {
-			
-			case 'dropdownField':
-				console.log('RENDER FIELD: ',  dropdownData);
-				if (dropdownData) {
 
-					// need to match dropdown data to field 
-					let dropdownOptions = [];
-					console.log('YAYAYAYAYAYAYAYA', props, dropdownData)
+			case 'dropdownField':
+				if (dropdownData) {
 
 					data = {
 						id: props.name,
@@ -84,17 +79,11 @@ export default class CreationTool extends React.Component {
 						value: ''
 					};
 
-					Object.entries(dropdownData).map(option=> {
-						if (option[1] === props.tableName) {
-							console.log('THIS IS THE OPTION', option)
-							
-						}
-					})
-
+					console.log('RENDER FIELD: ', props, dropdownData);
 					return (
-						<FormControlCard key={props.name} 
+						<FormControlCard key={props.name}
 							data={data}
-							dropdownOptions={dropdownOptions}
+							dropdownOptions={dropdownData}
 							type='dropdownField'
 							onChange={this.handleChange}
 						/>
@@ -125,7 +114,6 @@ export default class CreationTool extends React.Component {
 		if (props) {
 			// console.log('[LOG] fieldsgroup PROPS: ', props, creationToolDropdownData)
 
-			// WE HAVE EACH FIELD COMING IN HERE
 			let sectionName;
 			let requiredFields = props[1];
 			let sectionDBName = props[0];
@@ -137,6 +125,7 @@ export default class CreationTool extends React.Component {
 				servicesDataFields: 'Services'
 			};
 
+			// NAME THE DROP DOWN SECTIONS
 			Object.entries(sectionTranslation).map(fieldName => {
 				if (fieldName[0] === sectionDBName) {
 					sectionName = fieldName[1];
@@ -144,51 +133,61 @@ export default class CreationTool extends React.Component {
 			});
 
 			// CHECK TO SEE IF ANY FIELDS HAVE DROPDOWN OPTIONS
-			Object.entries(requiredFields).map(field => {
-				let fieldData = field[1];
-				let formType = field[1].formType;
-				let hasDropdown = false;
-				let dropdownFieldData;
-				let tableName = field[1].tableName;
-				
-				// CHECK TO SEE IF WE HAVE DROPDOWN OPTIONS FOR MATCHING FIELDS
-				if (formType.toLowerCase() === 'dropdownfield'){
-					// for (let [key, value] in Object.entries(creationToolDropdownData)) {
-					// 	console.log('asdfasdfasdfasdfasdf', tableName, creationToolDropdownData, [key], [value])
-					// 	// if (tableName.toLowerCase() === creationToolDropdownData[key]) {
-					// 	// }
-
-					// }
-
-					Object.keys(creationToolDropdownData).map(dropdownDataField => {
-						if (tableName.toLowerCase() === dropdownDataField.toLowerCase()) {
-							console.log('field name: ', fieldData);
-							console.log('dropdownDataField: ', dropdownDataField, creationToolDropdownData);
-
-
-							dropdownFieldData = dropdownDataField;
-							hasDropdown = true;
-						}
-					})
-				}
-				
-				if (hasDropdown) {
-					return (
-						this.renderField(fieldData, dropdownFieldData)
-					)
-				}
-
-			});
-
 			return (
-				<div className='formGroup'>
-					<h3 className='formGroupHeader'>{sectionName}</h3>
-					<hr />
-					{requiredFields.map(requiredField => {
-						return (this.renderField(requiredField, creationToolDropdownData));
-					})}
-				</div>
+				Object.entries(requiredFields).map(field => {
+					let fieldData = field[1];
+					let formType = field[1].formType;
+					let hasDropdown = false;
+					let dropdownFieldData;
+					let tableName = field[1].tableName;
+
+					// CHECK TO SEE IF WE HAVE DROPDOWN OPTIONS FOR MATCHING FIELDS
+					if (formType.toLowerCase() === 'dropdownfield') {
+						Object.entries(creationToolDropdownData).map(dropdownDataField => {
+							let key = dropdownDataField[0].toLowerCase();
+							let value = dropdownDataField[1];
+							dropdownFieldData = '';
+							if (tableName.toLowerCase() === key) {
+								// console.log('field name: ', fieldData);
+								// console.log('dropdownDataField: ', value);
+
+								// *************** GETTING ALL THE SAME DATA OPTIONS FOR EACH DROPDOWN
+
+
+								dropdownFieldData = value;
+								hasDropdown = true;
+
+								return (
+									this.renderField(fieldData, dropdownFieldData)
+								)
+							}
+						})
+
+					}
+
+					// IF IT IS NOT A DROPDOWN FIELD, FILL SECTION WITH INPUT FIELDS
+					return (
+						<div className='formGroup'>
+							<h3 className='formGroupHeader'>{sectionName}</h3>
+							<hr />
+							{requiredFields.map(requiredField => {
+								return (this.renderField(requiredField, dropdownFieldData));
+							})}
+						</div>
+					)
+				})
+
 			)
+
+			// return (
+			// 	<div className='formGroup'>
+			// 		<h3 className='formGroupHeader'>{sectionName}</h3>
+			// 		<hr />
+			// 		{requiredFields.map(requiredField => {
+			// 			return (this.renderField(requiredField));
+			// 		})}
+			// 	</div>
+			// )
 		}
 	}
 
