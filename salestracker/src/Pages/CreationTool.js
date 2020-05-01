@@ -137,7 +137,6 @@ export default class CreationTool extends React.Component {
 				Object.entries(requiredFields).map(field => {
 					let fieldData = field[1];
 					let formType = field[1].formType;
-					let hasDropdown = false;
 					let dropdownFieldData;
 					let tableName = field[1].tableName;
 
@@ -153,9 +152,7 @@ export default class CreationTool extends React.Component {
 
 								// *************** GETTING ALL THE SAME DATA OPTIONS FOR EACH DROPDOWN
 
-
 								dropdownFieldData = value;
-								hasDropdown = true;
 
 								return (
 									this.renderField(fieldData, dropdownFieldData)
