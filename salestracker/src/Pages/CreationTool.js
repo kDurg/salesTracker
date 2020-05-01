@@ -175,16 +175,6 @@ export default class CreationTool extends React.Component {
 				})
 
 			)
-
-			// return (
-			// 	<div className='formGroup'>
-			// 		<h3 className='formGroupHeader'>{sectionName}</h3>
-			// 		<hr />
-			// 		{requiredFields.map(requiredField => {
-			// 			return (this.renderField(requiredField));
-			// 		})}
-			// 	</div>
-			// )
 		}
 	}
 
